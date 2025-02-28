@@ -1,3 +1,0 @@
-/Users/rainjuhl/Documents/TrafficSimulator/build/CMakeFiles/traffic_model.dir
-/Users/rainjuhl/Documents/TrafficSimulator/build/CMakeFiles/edit_cache.dir
-/Users/rainjuhl/Documents/TrafficSimulator/build/CMakeFiles/rebuild_cache.dir
