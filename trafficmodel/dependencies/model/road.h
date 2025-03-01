@@ -42,7 +42,7 @@ class Road {
         void clearRoad();
 
         //Places vehicle at pos
-        void moveVehicle(Pos pos);
+        void moveVehicle(Pos pos, int size);
 
         // Deletes a vehicle at pos
         void deleteVehicle(Pos pos);
