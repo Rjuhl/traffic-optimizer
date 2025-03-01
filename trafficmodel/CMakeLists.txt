@@ -7,12 +7,13 @@ find_package(glfw3 REQUIRED)
 find_package(glm CONFIG REQUIRED)
 
 
+file(GLOB_RECURSE SOURCES "src/**/*.cpp" "dependencies/**/*.h" "src/*.cpp" "dependencies/*.h")
+message(STATUS "Sources collected: ${SOURCES}")
 add_executable(
     traffic_model 
-    dependencies/config.h 
-    src/main.cpp
     src/glad.c
-
+    src/utils/math.cpp
+    ${SOURCES}
 )
 
 target_include_directories(

@@ -1,7 +1,7 @@
 #pragma once
 #include "config.h"
 
-class Vehicle{
+class Vehicle {
     private:
         // Road ptr
         // Position
@@ -11,4 +11,4 @@ class Vehicle{
     public:
         // Move
         // Init
-}
+};
