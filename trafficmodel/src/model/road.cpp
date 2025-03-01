@@ -49,11 +49,14 @@ Pos Road::isSpace(Pos pos) {
     return pos;
 }
 
+void Road::moveVehicle(Pos pos, int size) { 
+    int index = posToIndex(pos);
+    for (int i = 0; i < size && index - i > 0; i++) { vehicles[index - i] = true; }
+};
+
 std::tuple<Pos, Road*> Road::crossIntersection(Pos pos, Direction dir) { return intersection->cross(this, pos, dir); }
 
 void Road::deleteVehicle(Pos pos) { vehicles.erase(posToIndex(pos)); };
-
-void Road::moveVehicle(Pos pos) { vehicles[posToIndex(pos)] = true; };
 
 Pos Road::getStart() { return start; };
 
