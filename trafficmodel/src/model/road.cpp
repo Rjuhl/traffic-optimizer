@@ -58,7 +58,11 @@ std::tuple<Pos, Road*> Road::crossIntersection(Pos pos, Direction dir) { return 
 
 void Road::deleteVehicle(Pos pos) { vehicles.erase(posToIndex(pos)); };
 
+Intersection* Road::getIntersection() { return intersection; };
+
 Pos Road::getStart() { return start; };
+
+int Road::length() { return numVehicles; };
 
 bool Road::isFull() { return vehicles.count(0) > 0; };
 

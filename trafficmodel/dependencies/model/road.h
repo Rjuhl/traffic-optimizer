@@ -2,7 +2,6 @@
 #include "config.h"
 #include "../utils/pos.h"
 #include "../enums/directions.h"
-#include "vehicle.h"
 #include "intersection.h"
 #include <tuple>
 
@@ -34,6 +33,12 @@ class Road {
 
         // Returns the start pos
         Pos getStart();
+
+        // Gets length of road = numVehicles
+        int length();
+
+        //Get Intersection
+        Intersection* getIntersection();
 
         // Determines if a car can enter road
         bool isFull();
