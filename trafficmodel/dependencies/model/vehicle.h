@@ -1,14 +1,27 @@
 #pragma once
 #include "config.h"
+#include "road.h"
+#include "utils/astar.h"
 
 class Vehicle {
     private:
-        // Road ptr
-        // Position
-        // Size
-        // Destinations
-        // Directions
+        int size;
+        int age;
+        int expected_lifespan;
+
+        Pos* pos;
+        Road* road;
+        Road* destination;
+        Astar* gps;
+        std::vector<Direction> path;
+
     public:
-        // Move
-        // Init
+        Vehicle(Road* road, Road* destination, int size);
+        ~Vehicle();
+        
+        // Sets cars pos to next pos (does not move the car to that pos)
+        void updatePos();
+
+        // moves car along road
+        void move();
 };

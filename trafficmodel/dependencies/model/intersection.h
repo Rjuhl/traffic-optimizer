@@ -7,11 +7,9 @@ class Road;
 
 class Intersection {
     private:
-        Road* leftRoad;
-        Road* rightRoad;
-        Road* topRoad;
-        Road* bottomRoad;
-        std::unordered_map<Direction, Road*> directionMap;
+        std::vector<Road*> roads;
+        std::unordered_map<Direction, Road*> outgoing;
+        std::unordered_map<Road*, Direction> incoming;
         
         int countDown;
         int verticalCountStart;
@@ -21,16 +19,14 @@ class Intersection {
 
     public:
         Intersection(
-            Road* leftRoad,
-            Road* rightRoad, 
-            Road* topRoad, 
-            Road* bottomRoad, 
+            std::vector<Road*>& roads,
             int verticalCountStart, 
             int horizontalCountStart, 
             bool verticalCrossing
         );
         ~Intersection();
 
+        Road* link(Direction dir);
         std::tuple<Pos, Road*> cross(Road* road, Pos pos, Direction dir);
         void update();
 };
