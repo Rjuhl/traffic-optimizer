@@ -4,7 +4,7 @@
 #include "enums/directions.h"
 #include "model/vehicle.h"
 #include "model/intersection.h"
-#include "utils/math.h"
+#include "utils/mymath.h"
 #include <tuple>
 
 Vehicle::Vehicle(Road* road, Road* destination, int size) : 

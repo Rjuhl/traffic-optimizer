@@ -4,31 +4,21 @@
 #include "enums/directions.h"
 #include "model/vehicle.h"
 #include "model/intersection.h"
-#include "utils/math.h"
+#include "utils/mymath.h"
 #include <tuple>
 #include <cassert>
 
 Intersection::Intersection(
-    std::vector<Road*>& roads,
     int verticalCountStart, 
     int horizontalCountStart,
     bool verticalCrossing
-) : 
-    roads(roads),
+) :
     verticalCountStart(verticalCountStart),
     horizontalCountStart(horizontalCountStart),
-    verticalCrossing(verticalCrossing) 
+    verticalCrossing(verticalCrossing),
+    directions{Direction::LEFT, Direction::RIGHT, Direction::TOP, Direction::BOTTOM}
 {
     (verticalCrossing) ? countDown = verticalCountStart : countDown = horizontalCountStart;
-
-    Direction directions[4] = {Direction::LEFT, Direction::RIGHT, Direction::TOP, Direction::BOTTOM};
-    assert(roads.size() == 8);
-    int loops = roads.size() / 2;
-    for (int i = 0; i < loops; i++) {
-        outgoing[directions[i]] = roads[i];
-        incoming[roads[loops + i]] = directions[i];
-    }
-
 };
 
 void Intersection::update() {
@@ -38,6 +28,14 @@ void Intersection::update() {
         (verticalCrossing) ? countDown = verticalCountStart : countDown = horizontalCountStart;
     }
 }
+
+void Intersection::assignOutgoingRoad(Road* road, Direction dir) {
+    outgoing[dir] = road;
+} 
+
+void Intersection::assignIncomingRoad(Road* road, Direction dir) {
+    incoming[road] = dir;
+}   
 
 Road* Intersection::link(Direction direction) {
     return outgoing[direction];
