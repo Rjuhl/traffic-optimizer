@@ -1,25 +1,30 @@
 cmake_minimum_required(VERSION 3.15)
 project(traffic_model VERSION 1.0.0)
+
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CMAKE_CXX_EXTENSIONS NO)
+set(CTEST_OUTPUT_ON_FAILURE TRUE)
 
-find_package(OpenGL REQUIRED)
-find_package(glfw3 REQUIRED)
-find_package(glm CONFIG REQUIRED)
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "CXX Flags: ${CMAKE_CXX_FLAGS}")
 
+enable_testing()
 
-file(GLOB_RECURSE SOURCES "src/**/*.cpp" "dependencies/**/*.h" "src/*.cpp" "dependencies/*.h")
-message(STATUS "Sources collected: ${SOURCES}")
-add_executable(
-    traffic_model 
-    src/glad.c
-    src/utils/math.cpp
-    ${SOURCES}
-)
+add_subdirectory(dependencies/googletest)
+add_subdirectory(lib)
+add_subdirectory(__tests__)
+
+add_executable(traffic_model src/main.cpp)
+target_link_libraries(traffic_model PRIVATE trafficlib)
 
 target_include_directories(
-    traffic_model 
-    PRIVATE
-    dependencies 
+    traffic_model
+    PUBLIC
+    ${CMAKE_SOURCE_DIR}/lib
+    ${CMAKE_SOURCE_DIR}/lib/external
+    ${CMAKE_SOURCE_DIR}/lib/enums
+    ${CMAKE_SOURCE_DIR}/lib/model
+    ${CMAKE_SOURCE_DIR}/lib/utils
+    ${CMAKE_SOURCE_DIR}/lib/view
 )
-
-target_link_libraries(traffic_model glfw glm::glm OpenGL::GL)

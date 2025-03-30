@@ -1,6 +1,7 @@
 #pragma once
 #include "config.h"
 #include "road.h"
+#include "utils/pos.h"
 #include "utils/astar.h"
 
 class Vehicle {

@@ -10,3 +10,4 @@ Node::Node() :
 Node::~Node() {};
 
 bool Node::operator>(const Node& other) const { return heuristic > other.heuristic; }
+
