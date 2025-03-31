@@ -15,7 +15,7 @@ class Road {
 
         float slope;
         float eucDistance;
-        int numVehicles;
+        int integerLength;
         std::unordered_map<int, bool> vehicles;
         
         // Converts a Positions into an index to vehivles
@@ -51,6 +51,9 @@ class Road {
 
         // Deletes a vehicle at pos
         void deleteVehicle(Pos pos);
+
+        // Return if vehicle is at index (for testing)
+        bool vehicleAtIndex(int index);
 
         Road(Pos start, Pos end, Intersection* intersection);
         ~Road();
