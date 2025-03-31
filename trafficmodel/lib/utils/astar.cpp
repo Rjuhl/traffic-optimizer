@@ -18,6 +18,7 @@ std::tuple<int, std::vector<Direction>> Astar::reconstructPath(Node* start, Node
         path.push_back(end->dir);
         end = end->parent;
     }
+    std::reverse(path.begin(), path.end());
     return std::tuple<int, std::vector<Direction>>(cost, path);
 }
 

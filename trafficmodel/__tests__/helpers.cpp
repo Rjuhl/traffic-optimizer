@@ -6,7 +6,7 @@ void DebugHelpers::printDirections(std::vector<Direction> directions) {
         Direction direction = directions[i];
         switch (direction) {
             case Direction::TOP: std::cout << "Top "; break;
-            case Direction::BOTTOM: std::cout << "Bottom"; break;
+            case Direction::BOTTOM: std::cout << "Bottom "; break;
             case Direction::LEFT: std::cout << "Left "; break;
             case Direction::RIGHT: std::cout << "Right "; break;
             default: std::cout << "Unknown "; break;
