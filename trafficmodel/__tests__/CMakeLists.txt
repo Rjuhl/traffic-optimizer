@@ -3,6 +3,8 @@ set(
     Sources
     basictest.cpp
     astartest.cpp
+    roadtest.cpp
+    intersectiontest.cpp
     helpers.cpp
     helpers.h
 )
