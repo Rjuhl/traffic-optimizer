@@ -19,6 +19,8 @@ target_include_directories(
     ${CMAKE_SOURCE_DIR}/lib/external
     ${CMAKE_SOURCE_DIR}/lib/enums
     ${CMAKE_SOURCE_DIR}/lib/model
+    ${CMAKE_SOURCE_DIR}/lib/model/dataSchema
+    ${CMAKE_SOURCE_DIR}/lib/model/interfaces
     ${CMAKE_SOURCE_DIR}/lib/utils
     ${CMAKE_SOURCE_DIR}/lib/view
 )
