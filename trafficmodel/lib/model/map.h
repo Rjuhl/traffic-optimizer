@@ -10,6 +10,7 @@
 #include <functional>
 
 class Garage;
+class Strategy;
 
 class Map {
     private:
