@@ -22,8 +22,18 @@ std::vector<IntersectionData> Map::getIntersectionsData(int range) {
     return data;
 }
 
+
+void Map::updateTime() {
+    if (time >= 86400) {
+        time = 0;
+    } else {
+        time += 1;
+    }
+}
+
 std::vector<Road*> Map::getRoads() { return roads; }
 std::vector<Intersection*> Map::getIntersections() { return intersections; };
 std::vector<Vehicle*> Map::getVehicles() { return vehicles; };
 std::vector<Garage*> Map::getGarages() { return garages; };
 std::vector<VehicleLifetimeStatus> Map::getVehicleData() { return vehicleData; };
+unsigned long Map::getTime() { return time; };

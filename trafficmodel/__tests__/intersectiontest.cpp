@@ -3,7 +3,7 @@
 #include "road.h"
 
 std::tuple<Intersection*, Road*, Road*, Road*> getBasicIntersection(int vertCount, int horCount) {
-    Intersection* intersection = new Intersection(vertCount, horCount, true);
+    Intersection* intersection = new Intersection(Pos(0, 0), vertCount, horCount, true);
     Road* vertical = new Road(Pos(1, 1), Pos(1, 0), intersection);
     Road* horizontal = new Road(Pos(0, 0), Pos(1, 0), intersection);
     Road* outgoing = new Road(Pos(1, 0), Pos(2, 0), intersection);
@@ -17,7 +17,7 @@ std::tuple<Intersection*, Road*, Road*, Road*> getBasicIntersection(int vertCoun
 TEST(IntersectionSuite, IntersectionUpdateTests) {
     // Test that updates switch back and forth
     auto [i, v, h, o] = getBasicIntersection(2, 2);
-    
+
 
 
     // Test that countdown is correct

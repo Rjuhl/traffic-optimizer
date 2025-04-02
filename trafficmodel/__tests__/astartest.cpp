@@ -28,7 +28,7 @@ class SimpleCyclicGraph {
         SimpleCyclicGraph() {
             // Create three intersections
             for (int i = 0; i < 3; i++) {
-                intersections.push_back(new Intersection(1, 1, false));
+                intersections.push_back(new Intersection(Pos(0, 0), 1, 1, false));
             }
 
             // Create roads
@@ -92,7 +92,7 @@ class SimpleAcyclicGraph {
         SimpleAcyclicGraph() {
             // Create three intersections
             for (int i = 0; i < 4; i++) {
-                intersections.push_back(new Intersection(1, 1, false));
+                intersections.push_back(new Intersection(Pos(0, 0), 1, 1, false));
             }
 
             // Create roads
@@ -135,7 +135,7 @@ class SimpleAcyclicGraph {
 // Test Single Node
 TEST(AStarSuite, SingleRoad) {
     Astar pathFinder = Astar();
-    Intersection* intersection = new Intersection(1, 1, false);
+    Intersection* intersection = new Intersection(Pos(0, 0), 1, 1, false);
     Road* start = new Road(Pos(1, 1), Pos(2, 2), intersection);
     
     std::tuple<int, std::vector<Direction>> shortestPath = pathFinder.astar(start, start);
@@ -154,7 +154,7 @@ TEST(AStarSuite, SingleRoad) {
 // Test invalid end node
 TEST(AstartSuite, InvalidEndNode) {
     SimpleAcyclicGraph graph = SimpleAcyclicGraph();
-    Intersection* seperateIntersection = new Intersection(1, 1, false);
+    Intersection* seperateIntersection = new Intersection(Pos(0, 0), 1, 1, false);
     Road* seperateRoad = new Road(Pos(20, 20), Pos(20, 21), seperateIntersection);
     Astar pathFinder = Astar();
 
@@ -188,7 +188,7 @@ TEST(AstartSuite, InvalidEndNode) {
 TEST(AstartSuite, InvalidStartNode) {
     // Test a start node not in the graph
     SimpleAcyclicGraph graph = SimpleAcyclicGraph();
-    Intersection* seperateIntersection = new Intersection(1, 1, false);
+    Intersection* seperateIntersection = new Intersection(Pos(0, 0), 1, 1, false);
     Road* seperateRoad = new Road(Pos(20, 20), Pos(20, 21), seperateIntersection);
     Astar pathFinder = Astar();
 

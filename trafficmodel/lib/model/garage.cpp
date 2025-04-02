@@ -1,46 +1,32 @@
 #include "config.h"
 #include "garage.h"
 #include "map.h"
+#include "defaultGarage.h"
 
 Garage::Garage(
-    int numCars, 
     Pos pos, 
     Road* exit,
-    Map* map,
-    std::function<Road*()> destinationDist
+    Map* map
 ) : 
-    numCars(numCars),
     pos(pos),
     exit(exit),
     map(map),
-    destinationDist(destinationDist),
-    sizeDist([](int) { return 1; })
-{};
-
-Garage::Garage(
-    int numCars, 
-    Pos pos, 
-    Road* exit,
-    Map* map,
-    std::function<Road*()> destinationDist,
-    std::function<int(int)> sizeDist
-) : 
-    numCars(numCars),
-    pos(pos),
-    exit(exit),
-    map(map),
-    destinationDist(destinationDist),
-    sizeDist(sizeDist)
+    patterns(std::make_unique<DefaultGaragePattern>(this))
 {};
 
 void Garage::update() {
-    if (!exit->isFull() && numCars > 0) {
+    if (!exit->isFull() && patterns->vehicleExits(map->getTime())) {
         Vehicle* vehicle = new Vehicle(
-            exit, destinationDist(), sizeDist(numCars)
+            exit, 
+            map->getRoads()[patterns->assignDestination(map->getTime())], 
+            patterns->assignSize()
         );
         map->addVehicle(vehicle);
-        numCars -= 1;
     }
 }
 
-bool Garage::isEmpty() { return numCars <= 0; }
+void Garage::assignPattern(GaragePatterns* pattern) {
+    patterns = std::unique_ptr<GaragePatterns>(pattern);
+}
+
+Map* Garage::getMap() { return map; };
