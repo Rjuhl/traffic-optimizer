@@ -9,10 +9,12 @@
 #include <cassert>
 
 Intersection::Intersection(
+    Pos pos,
     int verticalCountStart, 
     int horizontalCountStart,
     bool verticalCrossing
 ) :
+    pos(pos),
     verticalCountStart(verticalCountStart),
     horizontalCountStart(horizontalCountStart),
     verticalCrossing(verticalCrossing),

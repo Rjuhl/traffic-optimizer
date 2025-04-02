@@ -18,6 +18,7 @@ class Intersection {
         int maxQueueSize;
         std::deque<IntersectionData> intersectionData;
 
+        Pos pos;
         int countDown;
         int verticalCountStart;
         int horizontalCountStart;
@@ -28,6 +29,7 @@ class Intersection {
 
     public:
         Intersection(
+            Pos pos,
             int verticalCountStart, 
             int horizontalCountStart, 
             bool verticalCrossing

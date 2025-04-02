@@ -13,6 +13,8 @@ class Garage;
 
 class Map {
     private:
+        unsigned long time;
+
         std::vector<Road*> roads;
         std::vector<Intersection*> intersections;
         std::vector<Vehicle*> vehicles;
@@ -27,6 +29,8 @@ class Map {
         uint strategyUpdateClockStart;
         std::shared_ptr<Strategy> lightStrategy; 
 
+        void updateTime();
+
     public:
         Map();
         ~Map(); 
@@ -38,7 +42,8 @@ class Map {
         void loadMap(const std::string& filePath);
         void saveMap(const std::string& filePath);
         void addVehicle(Vehicle* vehicle);
-
+        unsigned long getTime();
+        
         
         MapStats getStats();
         std::vector<Road*> getRoads();

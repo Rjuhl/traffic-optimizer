@@ -3,32 +3,24 @@
 #include "road.h"
 #include "pos.h"
 #include "map.h"
+#include "garagePatterns.h"
 #include <functional>
 
 class Map;
+class GaragePatterns;
 
 class Garage {
     private:
-        int numCars;
-        
         Pos pos;
         Road* exit;
         Map* map;
 
-        std::function<int(int)> sizeDist;
-        std::function<Road*()> destinationDist;
+        std::unique_ptr<GaragePatterns> patterns;
         
     public:
-        Garage(int numCars, Pos pos, Road* exit, Map* map, 
-            std::function<Road*()> destinationDist
-        );
-        Garage(
-            int numCars, Pos pos, Road* exit, Map* map, 
-            std::function<Road*()> destinationDist, 
-            std::function<int(int)> sizeDist
-        );
-
-        bool isEmpty();
+        Garage(Pos pos, Road* exit, Map* map);
+       
+        void assignPattern(GaragePatterns* pattern);
         void update();
-
+        Map* getMap();
 };

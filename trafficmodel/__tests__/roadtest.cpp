@@ -5,7 +5,7 @@
 
 // Test Move Vehicle
 TEST(RoadSuite, MoveVehicleTest) {
-    Intersection* intersection = new Intersection(1, 1, false);
+    Intersection* intersection = new Intersection(Pos(0, 0), 1, 1, false);
     Road* straight = new Road(Pos(0, 0), Pos(5, 0), intersection); 
     Road* diagonal = new Road(Pos(0, 0), Pos(5, 5), intersection);
 
@@ -31,7 +31,7 @@ TEST(RoadSuite, MoveVehicleTest) {
 
 // Test travel road
 TEST(RoadSuite, TravelRoadTest) {
-    Intersection* intersection = new Intersection(1, 1, false);
+    Intersection* intersection = new Intersection(Pos(0, 0), 1, 1, false);
     Road* outgoingRoad = new Road(Pos(10, 10), Pos(10, 11), intersection);
     Road* straight = new Road(Pos(0, 0), Pos(5, 0), intersection); 
     Road* diagonal = new Road(Pos(0, 0), Pos(5, 5), intersection);
