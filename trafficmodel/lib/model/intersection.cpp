@@ -96,3 +96,27 @@ IntersectionData Intersection::getIntersectionData(int range) {
     data.horizontalEfficiency /= range;
     return data;
 };
+
+std::tuple<std::vector<float>, std::vector<Road*>> Intersection::seriralize() {
+    std::vector<float> attr = {pos.x, pos.y, (float)verticalCountStart, (float)horizontalCountStart, (float)verticalCrossing};
+    std::vector<Road*> connections(8, nullptr);
+    for (const auto& [road, direction] : incoming) {
+        connections[directions.at(direction)] = road;
+    }
+
+    for (const auto& [direction, road] : outgoing) {
+        connections[4 + directions.at(direction)] = road;
+    }
+    
+    return std::tuple<std::vector<float>, std::vector<Road*>>(attr, connections);
+};
+
+
+const std::unordered_map<Direction, int> Intersection::directions = {
+    {Direction::TOP, 0},
+    {Direction::BOTTOM, 1},
+    {Direction::LEFT, 2},
+    {Direction::RIGHT, 3}
+};
+
+const std::unordered_map<Direction, int>& Intersection::DirMap() { return directions; };

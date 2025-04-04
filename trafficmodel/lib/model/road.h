@@ -55,6 +55,9 @@ class Road {
         // Return if vehicle is at index (for testing)
         bool vehicleAtIndex(int index);
 
+        // Returns a vector that can be saved to represented the road
+        std::tuple<std::vector<float>, Intersection*> serialize();
+
         Road(Pos start, Pos end, Intersection* intersection);
         ~Road();
 

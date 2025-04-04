@@ -25,6 +25,9 @@ class Garage {
         // Called once per time step, possiable adding a vehicle to the network
         void update();
 
+        // Returns a tuple that can be saved to represented the garage later
+        std::tuple<Pos, Road*> serialize();
+
         // Return the map which the garge is part off
         Map* getMap();
 };
