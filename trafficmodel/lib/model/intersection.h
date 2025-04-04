@@ -11,7 +11,7 @@ class Intersection {
     private:
         std::unordered_map<Direction, Road*> outgoing;
         std::unordered_map<Road*, Direction> incoming;
-        Direction directions[4] = {Direction::LEFT, Direction::RIGHT, Direction::TOP, Direction::BOTTOM};
+        static const std::unordered_map<Direction, int> directions;
 
         int carsCrossed;
         int carsThatCouldCross;
@@ -51,4 +51,7 @@ class Intersection {
         void update();
         void assignIncomingRoad(Road* road, Direction dir);
         void assignOutgoingRoad(Road* road, Direction dir);
+
+        std::tuple<std::vector<float>, std::vector<Road*>> seriralize();
+        static const std::unordered_map<Direction, int>& DirMap();
 };

@@ -38,20 +38,45 @@ class Map {
         Map(const std::string& filePath);
         
 
+        // Performs all logic to next step in simulation
         void update();
-        void setStrategy(Strategy stategy);
+
+        // Updates the light timeing strategy with a custom provided strategy
+        void setStrategy(Strategy* stategy);
+
+        // Loads roads, intersection, and garages
         void loadMap(const std::string& filePath);
+
+        // Save roads, intersection, and garage positions to be loaded again
         void saveMap(const std::string& filePath);
+
+        // Adds a new vehicle to the map
         void addVehicle(Vehicle* vehicle);
+
+        // Get the number of times update has been called mod 86400
         unsigned long getTime();
         
-        
+        // Return general stats about traffic
         MapStats getStats();
+
+        // Returns all roads on the map
         std::vector<Road*> getRoads();
+
+        // Return all intersections on the map
         std::vector<Intersection*> getIntersections();
+
+        // Returns all vehicles currently on the road
         std::vector<Vehicle*> getVehicles();
+
+        // Returns al garages on the map
         std::vector<Garage*> getGarages();
+
+        // Returns data about all vehicles that have reached their destination
         std::vector<VehicleLifetimeStatus> getVehicleData();
+
+        // Returns data about each intersection over a time range
         std::vector<IntersectionData> getIntersectionsData(int range);
+
+        // Returns the light timeing for each intersection on the map
         std::vector<std::tuple<int, int>> getIntersectionTimes();
 };

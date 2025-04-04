@@ -29,4 +29,8 @@ void Garage::assignPattern(GaragePatterns* pattern) {
     patterns = std::unique_ptr<GaragePatterns>(pattern);
 }
 
+std::tuple<Pos, Road*> Garage::serialize() {
+    return std::tuple<Pos, Road*>(pos, exit);
+};
+
 Map* Garage::getMap() { return map; };

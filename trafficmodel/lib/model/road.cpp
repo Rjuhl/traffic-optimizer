@@ -54,6 +54,11 @@ void Road::moveVehicle(Pos pos, int size) {
     for (int i = 0; i < size && index - i >= 0; i++) { vehicles[index - i] = true; }
 };
 
+std::tuple<std::vector<float>, Intersection*> Road::serialize() {
+    std::vector<float> serialization = {start.x, start.y, end.x, end.y};
+    return std::tuple<std::vector<float>, Intersection*>(serialization, intersection);
+};
+
 std::tuple<Pos, Road*> Road::crossIntersection(Pos pos, Direction dir) { return intersection->cross(this, pos, dir); }
 
 void Road::deleteVehicle(Pos pos) { vehicles.erase(posToIndex(pos)); };
