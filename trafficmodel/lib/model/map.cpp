@@ -197,6 +197,7 @@ void Map::loadMap(const std::string& filePath) {
 void Map::update() {
     for (Vehicle* vehicle : vehicles) { vehicle->updatePos(); };
     for (Garage* garage :  garages) { garage->update(); };
+    for (Intersection* intersection: intersection) { intersection->update(); };
     for (int i = vehicles.size() - 1; i >= 0; i--) {
         vehicles[i]->move();
         VehicleLifetimeStatus status = vehicles[i]->reachedDestination(); 
