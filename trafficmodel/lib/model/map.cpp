@@ -1,6 +1,7 @@
 #include "map.h"
 #include "garage.h"
 #include "defaultStrategy.h"
+#include "vehicleInfo.h"
 #include <fstream>
 #include <cmath>
 
@@ -193,6 +194,26 @@ void Map::loadMap(const std::string& filePath) {
     }
 }
 
+void Map::update() {
+    for (Vehicle* vehicle : vehicles) { vehicle->updatePos(); };
+    for (Garage* garage :  garages) { garage->update(); };
+    for (int i = vehicles.size() - 1; i >= 0; i--) {
+        vehicles[i]->move();
+        VehicleLifetimeStatus status = vehicles[i]->reachedDestination(); 
+        if (status.status) {
+            vehicleData.push_back(status);
+            delete vehicles[i];
+            vehicles.erase(vehicles.begin() + i);
+        }
+    }
+    
+    updateTime();
+    if (time % strategyUpdateClock == 0) {
+        lightStrategy->setUpdateSchedule();
+        lightStrategy->updateLightTimers();
+    }
+}
+
 std::vector<std::tuple<int, int>> Map::getIntersectionTimes() {
     std::vector<std::tuple<int, int>> intersectionTimes;
     for (int i = 0; i < intersections.size(); i++) {
@@ -222,7 +243,12 @@ void Map::updateTime() {
 }
 
 
-void Map::setStrategy(Strategy* stategy) { lightStrategy = std::unique_ptr<Strategy>(stategy); };
+void Map::setStrategy(Strategy* stategy) { 
+    lightStrategy = std::unique_ptr<Strategy>(stategy); 
+    lightStrategy->setUpdateSchedule();
+    lightStrategy->updateLightTimers();
+};
+
 void Map::addVehicle(Vehicle* vehicle) { vehicles.push_back(vehicle); };
 
 std::vector<Road*> Map::getRoads() { return roads; }
