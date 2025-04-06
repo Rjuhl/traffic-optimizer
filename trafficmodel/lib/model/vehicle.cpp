@@ -53,3 +53,7 @@ VehicleLifetimeStatus Vehicle::reachedDestination() {
         road
     );
 };
+
+std::tuple<Pos, int, int> Vehicle::getPositionalInfo() { 
+    return std::tuple<Pos, int, int>(pos, age, currStep);
+}

@@ -85,7 +85,6 @@ IntersectionData Intersection::getIntersectionData(int range) {
     size_t end = intersectionData.size();
 
     for (int i = start; i < end; i++) {
-        std::cout << intersectionData.back().toString() << std::endl;
         data = data + intersectionData.back();
         dataToPutBack.push_back(intersectionData.back());
         intersectionData.pop_back();

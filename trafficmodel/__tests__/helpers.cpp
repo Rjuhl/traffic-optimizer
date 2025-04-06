@@ -51,3 +51,10 @@ void DebugHelpers::updateIntersection(Intersection* interesection, int times) {
 
 SimpleCyclicGraph DebugHelpers::getSimpleCyclicGraph() { return SimpleCyclicGraph(); };
 SimpleAcyclicGraph DebugHelpers::getSimpleAcyclicGraph() { return SimpleAcyclicGraph(); };
+
+void DebugHelpers::vehicleUpdate(Vehicle* vehicle, int timeSteps) {
+    for (int i = 0; i < timeSteps; i++) { 
+        vehicle->updatePos(); 
+        vehicle->move();
+    };    
+};

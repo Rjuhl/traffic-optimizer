@@ -4,6 +4,7 @@
 #include "utils/pos.h"
 #include "utils/astar.h"
 #include "vehicleInfo.h"
+#include <tuple>
 
 class Vehicle {
     private:
@@ -30,4 +31,7 @@ class Vehicle {
 
         // Checks if the destination has been reached and returns travel info
         VehicleLifetimeStatus reachedDestination();
+
+        // For testing
+        std::tuple<Pos, int, int>  getPositionalInfo();
 };

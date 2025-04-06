@@ -4,6 +4,7 @@
 #include "intersection.h"
 #include "simpleAcyclicGraph.h"
 #include "simpleCyclicGraph.h"
+#include "vehicle.h"
 #include <vector>
 
 class DebugHelpers {
@@ -17,6 +18,8 @@ class DebugHelpers {
 
         SimpleCyclicGraph getSimpleCyclicGraph();
         SimpleAcyclicGraph getSimpleAcyclicGraph();
+
+        void vehicleUpdate(Vehicle* vehicle, int timeSteps);
 };
 
 extern DebugHelpers helpers;

@@ -65,7 +65,7 @@ void Road::deleteVehicle(Pos pos) { vehicles.erase(posToIndex(pos)); };
 
 Intersection* Road::getIntersection() { return intersection; };
 
-Pos Road::getStart() { return start; };
+Pos Road::getStart() { return Pos(start.x, start.y); };
 
 int Road::length() { return integerLength; };
 

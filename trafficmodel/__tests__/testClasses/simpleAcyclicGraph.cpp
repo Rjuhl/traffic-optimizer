@@ -22,6 +22,7 @@ SimpleAcyclicGraph::SimpleAcyclicGraph() {
     intersections[1]->assignIncomingRoad(r5, Direction::BOTTOM);
     intersections[1]->assignOutgoingRoad(r4, Direction::BOTTOM);
     intersections[2]->assignOutgoingRoad(r3, Direction::RIGHT);
+    intersections[3]->assignIncomingRoad(r3, Direction::LEFT);
     intersections[3]->assignIncomingRoad(r4, Direction::TOP);
     intersections[3]->assignOutgoingRoad(r5, Direction::TOP);
 

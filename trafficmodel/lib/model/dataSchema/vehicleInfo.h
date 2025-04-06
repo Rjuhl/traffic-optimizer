@@ -14,5 +14,23 @@ struct VehicleLifetimeStatus {
     VehicleLifetimeStatus() = default;
 
     VehicleLifetimeStatus(bool s, int life, int a, std::vector<Direction> p, Road* st, Road* en)
-        : status(s), expectedLifespan(life), age(a), path(std::move(p)), start(st), end(en) {}
+        : status(s), expectedLifespan(life), age(a), path(std::move(p)), start(st), end(en) {};
+
+    bool operator==(const VehicleLifetimeStatus& other) const {
+
+        for (int i = 0; i < path.size(); i++) {
+            if (path[i] != other.path[i]) {
+                return false;
+            }
+        }
+
+        return (
+            status == other.status &&
+            expectedLifespan ==  other.expectedLifespan &&
+            age == other.age && 
+            start == other.start &&
+            end == other.end &&
+            path.size() == other.path.size() 
+        );
+    };
 };
