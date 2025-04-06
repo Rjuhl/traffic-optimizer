@@ -26,7 +26,7 @@ class Map {
         uint expectedTimeTraved;
         std::vector<VehicleLifetimeStatus> vehicleData;
 
-        uint strategyUpdateClock;
+        int strategyUpdateClock;
         std::shared_ptr<Strategy> lightStrategy; 
 
         void updateTime();

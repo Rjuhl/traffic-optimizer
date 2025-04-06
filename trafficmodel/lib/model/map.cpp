@@ -45,7 +45,7 @@ void Map::saveMap(const std::string& filePath) {
     std::vector<float> interData;
     std::vector<int> interRoadData;
     for (int i = 0; i < intersections.size(); i++) {
-        auto [attr, connections] = intersections[i]->seriralize();
+        auto [attr, connections] = intersections[i]->serialize();
         interData.insert(interData.end(), attr.begin(), attr.end());
         for (int j = 0; j < connections.size(); j++) {
             (connections[j] == nullptr) ? 
@@ -197,7 +197,7 @@ void Map::loadMap(const std::string& filePath) {
 void Map::update() {
     for (Vehicle* vehicle : vehicles) { vehicle->updatePos(); };
     for (Garage* garage :  garages) { garage->update(); };
-    for (Intersection* intersection: intersection) { intersection->update(); };
+    for (Intersection* intersection: intersections) { intersection->update(); };
     for (int i = vehicles.size() - 1; i >= 0; i--) {
         vehicles[i]->move();
         VehicleLifetimeStatus status = vehicles[i]->reachedDestination(); 
@@ -210,8 +210,11 @@ void Map::update() {
     
     updateTime();
     if (time % strategyUpdateClock == 0) {
-        lightStrategy->setUpdateSchedule();
-        lightStrategy->updateLightTimers();
+        strategyUpdateClock = lightStrategy->setUpdateSchedule();
+        std::unordered_map<int, std::tuple<int, int>> lightUpdates = lightStrategy->updateLightTimers();
+        for (const auto& [intersection, timings] : lightUpdates) {
+            intersections[intersection]->updateLightTiming(std::get<0>(timings), std::get<1>(timings));
+        }
     }
 }
 

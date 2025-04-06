@@ -26,10 +26,11 @@ Intersection::Intersection(
 };
 
 void Intersection::update() {
+    float eff = (carsThatCouldCross > 0) ? carsCrossed / carsThatCouldCross : 1;
     if (verticalCrossing) {
-        updateQueue(IntersectionData(carsCrossed, 0, carsCrossed / carsThatCouldCross, 1));
+        updateQueue(IntersectionData(carsCrossed, 0, eff, 1));
     } else {
-        updateQueue(IntersectionData(0, carsCrossed, 1, carsCrossed / carsThatCouldCross));
+        updateQueue(IntersectionData(0, carsCrossed, 1, eff));
     }   
 
     countDown -= 1;
@@ -40,7 +41,6 @@ void Intersection::update() {
         verticalCrossing = !verticalCrossing;
         (verticalCrossing) ? countDown = verticalCountStart : countDown = horizontalCountStart;
     }
-
 }
 
 void Intersection::assignOutgoingRoad(Road* road, Direction dir) {
@@ -63,11 +63,12 @@ std::tuple<Pos, Road*> Intersection::cross(Road* road, Pos pos, Direction dir) {
     Direction rfrom = incoming[road];
     if (((rfrom == Direction::TOP || rfrom == Direction::BOTTOM) && verticalCrossing) ||
         ((rfrom == Direction::LEFT || rfrom == Direction::RIGHT) && !verticalCrossing)) {
+
+        carsThatCouldCross += 1;
         if (!(outgoing[dir]->isFull())) {
             carsCrossed += 1;
             return std::tuple<Pos, Road*>(outgoing[dir]->getStart(), outgoing[dir]);
         }
-        carsThatCouldCross += 1;
     }
     return std::tuple<Pos, Road*>(pos, road);
 };
@@ -80,8 +81,11 @@ void Intersection::updateQueue(IntersectionData data) {
 IntersectionData Intersection::getIntersectionData(int range) {
     IntersectionData data = IntersectionData();
     std::vector<IntersectionData> dataToPutBack;
-    size_t start = std::max<size_t>(0, intersectionData.size() - range);
-    for (int i = start; i < intersectionData.size(); i++) {
+    size_t start = (intersectionData.size() > range) ? intersectionData.size() - range : 0;
+    size_t end = intersectionData.size();
+
+    for (int i = start; i < end; i++) {
+        std::cout << intersectionData.back().toString() << std::endl;
         data = data + intersectionData.back();
         dataToPutBack.push_back(intersectionData.back());
         intersectionData.pop_back();
@@ -92,12 +96,12 @@ IntersectionData Intersection::getIntersectionData(int range) {
         dataToPutBack.pop_back();
     }
 
-    data.verticalEfficiency /= range;
-    data.horizontalEfficiency /= range;
+    data.verticalEfficiency /= std::min<size_t>(range, intersectionData.size());
+    data.horizontalEfficiency /= std::min<size_t>(range, intersectionData.size());
     return data;
 };
 
-std::tuple<std::vector<float>, std::vector<Road*>> Intersection::seriralize() {
+std::tuple<std::vector<float>, std::vector<Road*>> Intersection::serialize() {
     std::vector<float> attr = {pos.x, pos.y, (float)verticalCountStart, (float)horizontalCountStart, (float)verticalCrossing};
     std::vector<Road*> connections(8, nullptr);
     for (const auto& [road, direction] : incoming) {
@@ -111,6 +115,10 @@ std::tuple<std::vector<float>, std::vector<Road*>> Intersection::seriralize() {
     return std::tuple<std::vector<float>, std::vector<Road*>>(attr, connections);
 };
 
+void Intersection::updateLightTiming(int verticalTiming, int horizontalTiming) { 
+    verticalCountStart = verticalTiming;
+    horizontalCountStart = horizontalTiming;
+}
 
 const std::unordered_map<Direction, int> Intersection::directions = {
     {Direction::TOP, 0},

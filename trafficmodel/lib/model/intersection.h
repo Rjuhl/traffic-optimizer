@@ -46,12 +46,14 @@ class Intersection {
 
         // returns a data about travel throught intesection for X (or range) time steps ago
         IntersectionData getIntersectionData(int range);
-
+        
+        // Update light timeings 
+        void updateLightTiming(int verticalTiming, int horizontalTiming);
 
         void update();
         void assignIncomingRoad(Road* road, Direction dir);
         void assignOutgoingRoad(Road* road, Direction dir);
 
-        std::tuple<std::vector<float>, std::vector<Road*>> seriralize();
+        std::tuple<std::vector<float>, std::vector<Road*>> serialize();
         static const std::unordered_map<Direction, int>& DirMap();
 };
