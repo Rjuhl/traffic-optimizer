@@ -7,130 +7,129 @@
 #include "intersection.h"
 #include <tuple>
 
-DebugHelpers helpers = DebugHelpers();
 
-// Simple Test Graph
-class SimpleCyclicGraph {
-    /*
-        ###############
-        ###0-------0###
-        ####\#####/####
-        ######\#/######
-        #######0#######
-        ###############
-    */
+// // Simple Test Graph
+// class SimpleCyclicGraph {
+//     /*
+//         ###############
+//         ###0-------0###
+//         ####\#####/####
+//         ######\#/######
+//         #######0#######
+//         ###############
+//     */
 
-    private:
-        std::vector<Road*> roads;
-        std::vector<Intersection*> intersections;
+//     private:
+//         std::vector<Road*> roads;
+//         std::vector<Intersection*> intersections;
 
-    public:
-        SimpleCyclicGraph() {
-            // Create three intersections
-            for (int i = 0; i < 3; i++) {
-                intersections.push_back(new Intersection(Pos(0, 0), 1, 1, false));
-            }
+//     public:
+//         SimpleCyclicGraph() {
+//             // Create three intersections
+//             for (int i = 0; i < 3; i++) {
+//                 intersections.push_back(new Intersection(Pos(0, 0), 1, 1, false));
+//             }
 
-            // Create roads
-            Road* r0 = new Road(Pos(0, 0), Pos(0, 3), intersections[0]);
-            Road* r1 = new Road(Pos(0, 3), Pos(8, 3), intersections[1]);
-            Road* r2 = new Road(Pos(8, 3), Pos(0, 3), intersections[0]);
-            Road* r3 = new Road(Pos(0, 3), Pos(4, 0), intersections[2]);
-            Road* r4 = new Road(Pos(4, 0), Pos(0, 3), intersections[0]);
-            Road* r5 = new Road(Pos(4, 0), Pos(8, 3), intersections[1]);
-            Road* r6 = new Road(Pos(8, 3), Pos(4, 0), intersections[2]);
+//             // Create roads
+//             Road* r0 = new Road(Pos(0, 0), Pos(0, 3), intersections[0]);
+//             Road* r1 = new Road(Pos(0, 3), Pos(8, 3), intersections[1]);
+//             Road* r2 = new Road(Pos(8, 3), Pos(0, 3), intersections[0]);
+//             Road* r3 = new Road(Pos(0, 3), Pos(4, 0), intersections[2]);
+//             Road* r4 = new Road(Pos(4, 0), Pos(0, 3), intersections[0]);
+//             Road* r5 = new Road(Pos(4, 0), Pos(8, 3), intersections[1]);
+//             Road* r6 = new Road(Pos(8, 3), Pos(4, 0), intersections[2]);
 
-            //Link roads to intersections
-            intersections[0]->assignOutgoingRoad(r1, Direction::RIGHT);
-            intersections[0]->assignOutgoingRoad(r3, Direction::BOTTOM);
-            intersections[0]->assignIncomingRoad(r0, Direction::LEFT);
-            intersections[0]->assignIncomingRoad(r2, Direction::RIGHT);
-            intersections[0]->assignIncomingRoad(r4, Direction::BOTTOM);
-            intersections[1]->assignOutgoingRoad(r2, Direction::LEFT);
-            intersections[1]->assignOutgoingRoad(r6, Direction::BOTTOM);
-            intersections[1]->assignIncomingRoad(r1, Direction::LEFT);
-            intersections[1]->assignIncomingRoad(r5, Direction::BOTTOM);
-            intersections[2]->assignOutgoingRoad(r4, Direction::LEFT);
-            intersections[2]->assignOutgoingRoad(r5, Direction::RIGHT);
-            intersections[2]->assignIncomingRoad(r3, Direction::LEFT);
-            intersections[2]->assignIncomingRoad(r6, Direction::RIGHT);
+//             //Link roads to intersections
+//             intersections[0]->assignOutgoingRoad(r1, Direction::RIGHT);
+//             intersections[0]->assignOutgoingRoad(r3, Direction::BOTTOM);
+//             intersections[0]->assignIncomingRoad(r0, Direction::LEFT);
+//             intersections[0]->assignIncomingRoad(r2, Direction::RIGHT);
+//             intersections[0]->assignIncomingRoad(r4, Direction::BOTTOM);
+//             intersections[1]->assignOutgoingRoad(r2, Direction::LEFT);
+//             intersections[1]->assignOutgoingRoad(r6, Direction::BOTTOM);
+//             intersections[1]->assignIncomingRoad(r1, Direction::LEFT);
+//             intersections[1]->assignIncomingRoad(r5, Direction::BOTTOM);
+//             intersections[2]->assignOutgoingRoad(r4, Direction::LEFT);
+//             intersections[2]->assignOutgoingRoad(r5, Direction::RIGHT);
+//             intersections[2]->assignIncomingRoad(r3, Direction::LEFT);
+//             intersections[2]->assignIncomingRoad(r6, Direction::RIGHT);
 
-            //Add roads to roads vecotor
-            roads = {r0, r1, r2, r3, r4, r5, r6};
-        }
+//             //Add roads to roads vecotor
+//             roads = {r0, r1, r2, r3, r4, r5, r6};
+//         }
         
-        ~SimpleCyclicGraph() {
-            for (int i = 0; i < intersections.size(); i++) {
-                delete intersections[i];
-            }
+//         ~SimpleCyclicGraph() {
+//             for (int i = 0; i < intersections.size(); i++) {
+//                 delete intersections[i];
+//             }
 
-            for (int i = 0; i < roads.size(); i++) {
-                delete roads[i];
-            }
-        }
+//             for (int i = 0; i < roads.size(); i++) {
+//                 delete roads[i];
+//             }
+//         }
 
-        std::vector<Road*> getRoads() { return roads; }
+//         std::vector<Road*> getRoads() { return roads; }
 
-};
+// };
 
-// Simple Test Graph
-class SimpleAcyclicGraph {
-    /*
-        ##################
-        ###0----------0###
-        ####\########/####
-        ######\####/######
-        #######0--0#######
-        ##################
-    */
+// // Simple Test Graph
+// class SimpleAcyclicGraph {
+//     /*
+//         ##################
+//         ###0----------0###
+//         ####\########/####
+//         ######\####/######
+//         #######0--0#######
+//         ##################
+//     */
 
-    private:
-        std::vector<Road*> roads;
-        std::vector<Intersection*> intersections;
+//     private:
+//         std::vector<Road*> roads;
+//         std::vector<Intersection*> intersections;
 
-    public:
-        SimpleAcyclicGraph() {
-            // Create three intersections
-            for (int i = 0; i < 4; i++) {
-                intersections.push_back(new Intersection(Pos(0, 0), 1, 1, false));
-            }
+//     public:
+//         SimpleAcyclicGraph() {
+//             // Create three intersections
+//             for (int i = 0; i < 4; i++) {
+//                 intersections.push_back(new Intersection(Pos(0, 0), 1, 1, false));
+//             }
 
-            // Create roads
-            Road* r0 = new Road(Pos(0, 0), Pos(0, 3), intersections[0]);
-            Road* r1 = new Road(Pos(0, 3), Pos(10, 3), intersections[1]);
-            Road* r2 = new Road(Pos(0, 3), Pos(4, 0), intersections[2]);
-            Road* r3 = new Road(Pos(4, 0), Pos(6, 0), intersections[3]);
-            Road* r4 = new Road(Pos(10, 3), Pos(6, 0), intersections[3]);
-            Road* r5 = new Road(Pos(6, 0), Pos(10, 3), intersections[1]);
+//             // Create roads
+//             Road* r0 = new Road(Pos(0, 0), Pos(0, 3), intersections[0]);
+//             Road* r1 = new Road(Pos(0, 3), Pos(10, 3), intersections[1]);
+//             Road* r2 = new Road(Pos(0, 3), Pos(4, 0), intersections[2]);
+//             Road* r3 = new Road(Pos(4, 0), Pos(6, 0), intersections[3]);
+//             Road* r4 = new Road(Pos(10, 3), Pos(6, 0), intersections[3]);
+//             Road* r5 = new Road(Pos(6, 0), Pos(10, 3), intersections[1]);
 
-            //Link roads to intersections
-            intersections[0]->assignIncomingRoad(r0, Direction::BOTTOM);
-            intersections[0]->assignOutgoingRoad(r1, Direction::RIGHT);
-            intersections[0]->assignOutgoingRoad(r2, Direction::BOTTOM);
-            intersections[1]->assignIncomingRoad(r1, Direction::LEFT);
-            intersections[1]->assignIncomingRoad(r5, Direction::BOTTOM);
-            intersections[1]->assignOutgoingRoad(r4, Direction::BOTTOM);
-            intersections[2]->assignOutgoingRoad(r3, Direction::RIGHT);
-            intersections[3]->assignIncomingRoad(r4, Direction::TOP);
-            intersections[3]->assignOutgoingRoad(r5, Direction::TOP);
+//             //Link roads to intersections
+//             intersections[0]->assignIncomingRoad(r0, Direction::BOTTOM);
+//             intersections[0]->assignOutgoingRoad(r1, Direction::RIGHT);
+//             intersections[0]->assignOutgoingRoad(r2, Direction::BOTTOM);
+//             intersections[1]->assignIncomingRoad(r1, Direction::LEFT);
+//             intersections[1]->assignIncomingRoad(r5, Direction::BOTTOM);
+//             intersections[1]->assignOutgoingRoad(r4, Direction::BOTTOM);
+//             intersections[2]->assignOutgoingRoad(r3, Direction::RIGHT);
+//             intersections[3]->assignIncomingRoad(r4, Direction::TOP);
+//             intersections[3]->assignOutgoingRoad(r5, Direction::TOP);
 
-            //Add roads to roads vecotor
-            roads = {r0, r1, r2, r3, r4, r5};
-        }
+//             //Add roads to roads vecotor
+//             roads = {r0, r1, r2, r3, r4, r5};
+//         }
         
-        ~SimpleAcyclicGraph() {
-            for (int i = 0; i < intersections.size(); i++) {
-                delete intersections[i];
-            }
+//         ~SimpleAcyclicGraph() {
+//             for (int i = 0; i < intersections.size(); i++) {
+//                 delete intersections[i];
+//             }
 
-            for (int i = 0; i < roads.size(); i++) {
-                delete roads[i];
-            }
-        }
+//             for (int i = 0; i < roads.size(); i++) {
+//                 delete roads[i];
+//             }
+//         }
 
-        std::vector<Road*> getRoads() { return roads; }
+//         std::vector<Road*> getRoads() { return roads; }
 
-};
+// };
 
 // Test Single Node
 TEST(AStarSuite, SingleRoad) {
@@ -153,7 +152,7 @@ TEST(AStarSuite, SingleRoad) {
 
 // Test invalid end node
 TEST(AstartSuite, InvalidEndNode) {
-    SimpleAcyclicGraph graph = SimpleAcyclicGraph();
+    SimpleAcyclicGraph graph = helpers.getSimpleAcyclicGraph();
     Intersection* seperateIntersection = new Intersection(Pos(0, 0), 1, 1, false);
     Road* seperateRoad = new Road(Pos(20, 20), Pos(20, 21), seperateIntersection);
     Astar pathFinder = Astar();
@@ -187,7 +186,7 @@ TEST(AstartSuite, InvalidEndNode) {
 // Test invalid start node
 TEST(AstartSuite, InvalidStartNode) {
     // Test a start node not in the graph
-    SimpleAcyclicGraph graph = SimpleAcyclicGraph();
+    SimpleAcyclicGraph graph = helpers.getSimpleAcyclicGraph();
     Intersection* seperateIntersection = new Intersection(Pos(0, 0), 1, 1, false);
     Road* seperateRoad = new Road(Pos(20, 20), Pos(20, 21), seperateIntersection);
     Astar pathFinder = Astar();
@@ -202,8 +201,8 @@ TEST(AstartSuite, InvalidStartNode) {
 
 // Test simple graph
 TEST(AstarSuite, SimpleGraphTests) {
-    SimpleCyclicGraph cyclicGraph = SimpleCyclicGraph();
-    SimpleAcyclicGraph acyclicGraph = SimpleAcyclicGraph();
+    SimpleCyclicGraph cyclicGraph = helpers.getSimpleCyclicGraph();
+    SimpleAcyclicGraph acyclicGraph = helpers.getSimpleAcyclicGraph();
     std::vector<Road*> roads = cyclicGraph.getRoads();
     std::vector<Road*> roads2 = acyclicGraph.getRoads();
     Astar pathFinder = Astar();

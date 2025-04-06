@@ -35,6 +35,7 @@ void Vehicle::updatePos() {
 };
 
 void Vehicle::move() {
+    age += 1;
     road->moveVehicle(pos, size);
 };
 

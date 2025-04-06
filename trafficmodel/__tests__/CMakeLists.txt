@@ -4,9 +4,14 @@ set(
     basictest.cpp
     astartest.cpp
     roadtest.cpp
+    vehicletest.cpp
     intersectiontest.cpp
     helpers.cpp
     helpers.h
+    testClasses/simpleAcyclicGraph.cpp
+    testClasses/simpleAcyclicGraph.h
+    testClasses/simpleCyclicGraph.cpp
+    testClasses/simpleCyclicGraph.h    
 )
 
 add_executable(${THIS} ${Sources})
@@ -22,6 +27,7 @@ target_include_directories(
     ${THIS} 
     PRIVATE
     ${CMAKE_SOURCE_DIR}/__tests__
+    ${CMAKE_SOURCE_DIR}/__tests__/testClasses
     ${CMAKE_SOURCE_DIR}/lib
     ${CMAKE_SOURCE_DIR}/lib/external
     ${CMAKE_SOURCE_DIR}/lib/enums
