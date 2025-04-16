@@ -1,7 +1,7 @@
 #pragma once
 #include "config.h"
-#include "model/road.h"
-#include "utils/node.h"
+#include "road.h"
+#include "node.h"
 
 class Astar {
     private:

@@ -1,8 +1,8 @@
 #pragma once
 #include "config.h"
 #include "road.h"
-#include "utils/pos.h"
-#include "utils/astar.h"
+#include "pos.h"
+#include "astar.h"
 #include "vehicleInfo.h"
 #include <tuple>
 

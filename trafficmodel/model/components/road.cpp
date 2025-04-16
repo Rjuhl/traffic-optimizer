@@ -1,10 +1,10 @@
 #include "config.h"
-#include "model/road.h"
+#include "road.h"
 #include "utils/pos.h"
-#include "enums/directions.h"
-#include "model/vehicle.h"
-#include "model/intersection.h"
-#include "utils/mymath.h"
+#include "directions.h"
+#include "vehicle.h"
+#include "intersection.h"
+#include "mymath.h"
 #include <tuple>
 
 Road::Road(Pos start, Pos end, Intersection* intersection) : start(start), end(end), intersection(intersection) {

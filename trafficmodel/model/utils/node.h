@@ -1,6 +1,6 @@
 #pragma once
 #include "config.h"
-#include "model/road.h"
+#include "road.h"
 
 struct Node {
     Node();

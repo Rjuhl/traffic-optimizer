@@ -1,7 +1,7 @@
 #pragma once
 #include "config.h"
 #include "road.h"
-#include "../utils/pos.h"
+#include "pos.h"
 #include "intersectionData.h"
 #include <deque>
 

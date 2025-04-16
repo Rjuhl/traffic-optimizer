@@ -12,19 +12,20 @@ message(STATUS "CXX Flags: ${CMAKE_CXX_FLAGS}")
 enable_testing()
 
 add_subdirectory(dependencies/googletest)
-add_subdirectory(lib)
+add_subdirectory(model)
+add_subdirectory(modelGUI)
 add_subdirectory(__tests__)
 
 add_executable(traffic_model src/main.cpp)
-target_link_libraries(traffic_model PRIVATE trafficlib)
+target_link_libraries(traffic_model PRIVATE model modelGUI)
 
 target_include_directories(
     traffic_model
     PUBLIC
-    ${CMAKE_SOURCE_DIR}/lib
-    ${CMAKE_SOURCE_DIR}/lib/external
-    ${CMAKE_SOURCE_DIR}/lib/enums
-    ${CMAKE_SOURCE_DIR}/lib/model
-    ${CMAKE_SOURCE_DIR}/lib/utils
-    ${CMAKE_SOURCE_DIR}/lib/view
+    ${CMAKE_SOURCE_DIR}/model
+    ${CMAKE_SOURCE_DIR}/model/external
+    ${CMAKE_SOURCE_DIR}/model/enums
+    ${CMAKE_SOURCE_DIR}/model/components
+    ${CMAKE_SOURCE_DIR}/model/utils
+    ${CMAKE_SOURCE_DIR}/modelGUI
 )

@@ -1,5 +1,5 @@
 #include "config.h"
-#include "utils/node.h"
+#include "node.h"
 #include <limits>
 
 Node::Node() : 

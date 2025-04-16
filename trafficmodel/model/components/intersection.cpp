@@ -1,10 +1,10 @@
 #include "config.h"
 #include "road.h"
-#include "utils/pos.h"
-#include "enums/directions.h"
+#include "pos.h"
+#include "directions.h"
 #include "vehicle.h"
-#include "model/intersection.h"
-#include "utils/mymath.h"
+#include "intersection.h"
+#include "mymath.h"
 #include <tuple>
 #include <cassert>
 

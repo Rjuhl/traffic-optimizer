@@ -20,7 +20,7 @@ target_link_libraries(
     PRIVATE 
     gtest 
     gtest_main
-    trafficlib
+    model
 )
 
 target_include_directories(
@@ -28,12 +28,11 @@ target_include_directories(
     PRIVATE
     ${CMAKE_SOURCE_DIR}/__tests__
     ${CMAKE_SOURCE_DIR}/__tests__/testClasses
-    ${CMAKE_SOURCE_DIR}/lib
-    ${CMAKE_SOURCE_DIR}/lib/external
-    ${CMAKE_SOURCE_DIR}/lib/enums
-    ${CMAKE_SOURCE_DIR}/lib/model
-    ${CMAKE_SOURCE_DIR}/lib/utils
-    ${CMAKE_SOURCE_DIR}/lib/view
+    ${CMAKE_SOURCE_DIR}/model
+    ${CMAKE_SOURCE_DIR}/model/external
+    ${CMAKE_SOURCE_DIR}/model/enums
+    ${CMAKE_SOURCE_DIR}/model/model
+    ${CMAKE_SOURCE_DIR}/model/utils
 )
 
 include(GoogleTest)

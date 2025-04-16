@@ -1,7 +1,7 @@
 #pragma once
 #include "config.h"
-#include "../utils/pos.h"
-#include "../enums/directions.h"
+#include "pos.h"
+#include "directions.h"
 #include "intersection.h"
 #include <tuple>
 

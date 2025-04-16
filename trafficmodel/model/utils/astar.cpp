@@ -1,11 +1,11 @@
 #include "config.h"
-#include "model/road.h"
-#include "utils/pos.h"
-#include "enums/directions.h"
-#include "model/intersection.h"
-#include "utils/mymath.h"
-#include "utils/astar.h"
-#include "utils/node.h"
+#include "road.h"
+#include "pos.h"
+#include "directions.h"
+#include "intersection.h"
+#include "mymath.h"
+#include "astar.h"
+#include "node.h"
 #include <tuple>
 #include <queue>
 

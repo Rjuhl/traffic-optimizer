@@ -1,4 +1,4 @@
-set(THIS trafficlib)
+set(THIS modelGUI)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
@@ -15,15 +15,8 @@ add_library(
 target_include_directories(
     ${THIS}
     PUBLIC
-    ${CMAKE_SOURCE_DIR}/lib
-    ${CMAKE_SOURCE_DIR}/lib/external
-    ${CMAKE_SOURCE_DIR}/lib/enums
-    ${CMAKE_SOURCE_DIR}/lib/model
-    ${CMAKE_SOURCE_DIR}/lib/model/dataSchema
-    ${CMAKE_SOURCE_DIR}/lib/model/interfaces
-    ${CMAKE_SOURCE_DIR}/lib/model/defaults
-    ${CMAKE_SOURCE_DIR}/lib/utils
-    ${CMAKE_SOURCE_DIR}/lib/view
+    ${CMAKE_SOURCE_DIR}/modelGUI
+    ${CMAKE_SOURCE_DIR}/modelGUI/external
 )
 
 target_link_libraries(

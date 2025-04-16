@@ -1,4 +1,4 @@
-#include "utils/pos.h"
+#include "pos.h"
 
 Pos::Pos(float x, float y) : x(x), y(y) {};
 Pos::~Pos() {};
