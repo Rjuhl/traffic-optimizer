@@ -1,9 +1,6 @@
 #pragma once
 #include "config.h"
-
-struct Rectangle {
-
-}
+#include "rectangleMesh.h"
 
 struct TransformComponent {
     glm::vec2 position;
@@ -11,13 +8,9 @@ struct TransformComponent {
     float scale;
 }
 
-struct PixelMap {
-
-}
-
 struct MeshComponent {
-    Rectangle vetexes;
-    PixelMap pixelColors;
+    RectangleMesh vertexes;
+    // PixelMap pixelColors;
 }
 
 struct ObjectComponent {
