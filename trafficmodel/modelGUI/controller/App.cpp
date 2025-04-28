@@ -4,6 +4,7 @@
 #include "rectangleMesh.h"
 #include "pos.h"
 #include "guiHelpers.h"
+#include "camera.h"
 
 App::App() {};
 
@@ -49,14 +50,17 @@ int App::run(){
 	unsigned int view_location = glGetUniformLocation(shader, "view");
     unsigned int proj_location = glGetUniformLocation(shader, "projection");
 
-	glm::vec3 camera_pos = {0.0f, 0.0f, 5.0f};
-	glm::vec3 camera_target = {0.0f, 0.0f, 0.0f};
-	glm::vec3 up = {0.0f, 1.0f, 0.0f};
-	glm::mat4 view = glm::lookAt(camera_pos, camera_target, up);
-	glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view));
+	// glm::vec3 camera_pos = {0.0f, 0.0f, 5.0f};
+	// glm::vec3 camera_target = {0.0f, 0.0f, 0.0f};
+	// glm::vec3 up = {0.0f, 1.0f, 0.0f};
+	// glm::mat4 view = glm::lookAt(camera_pos, camera_target, up);
+	// glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view));
 
-    glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 10.0f);
-    glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(projection));
+    // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 10.0f);
+    // glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(projection));
+
+    Camera* camera = new Camera(window, view_location, proj_location);
+
 
     RectangleMesh* rect1 = new RectangleMesh(Pos(-0.5, -0.5), Pos(0.5, 0.5), 0.25, 2.0f);
     RectangleMesh* rect2 = new RectangleMesh(Pos(2, 2), 1, 0.25, 1.0f);
@@ -67,6 +71,8 @@ int App::run(){
 
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
+
+        camera->update(1);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(shader);
@@ -83,6 +89,8 @@ int App::run(){
 
     delete rect1;
     delete rect2;
+
+    delete camera;
 
     return 0;
 };
