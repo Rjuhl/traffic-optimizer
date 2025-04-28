@@ -20,29 +20,29 @@ void Camera::update(float deltaTime) {
         cameraPos.x -= 0.1 * scale * deltaTime;
     }
 
-    // Make sure scale is >=- 1
-    // if (glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS) {
-    //     scale *= 1.1;
-    // }
 
-    // if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS) {
-    //     rotation.z += 1.f * deltaTime;
-    // }
+    if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS) {
+        scale /= 1.1;
+        scale = std::max(scale, 10.f);
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS) {
+        scale *= 1.1;
+        scale = std::min(scale, 1000.f);
+    }
 
     
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        rotation.z += 1.f * deltaTime;
+        rotation.z += 2.f * deltaTime;
     }
 
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        rotation.z -= 1.f * deltaTime;
+        rotation.z -= 2.f * deltaTime;
     }
-
-    
-    // Need to update Z cameraPos too
 
     cameraTarget = cameraPos;
     cameraTarget.z = 0.f;
+    cameraPos.z = scale;
     glm::mat4 view = glm::rotate(glm::lookAt(cameraPos, cameraTarget, up), glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
     glm::mat4 projection = glm::ortho(-scale, scale, -scale, scale, 0.1f, scale);
 

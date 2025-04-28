@@ -72,7 +72,7 @@ int App::run(){
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
-        camera->update(1);
+        camera->update(0.1);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(shader);
