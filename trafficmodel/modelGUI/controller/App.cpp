@@ -59,7 +59,7 @@ int App::run(){
     glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(projection));
 
     RectangleMesh* rect1 = new RectangleMesh(Pos(-0.5, -0.5), Pos(0.5, 0.5), 0.25, 2.0f);
-    RectangleMesh* rect2 = new RectangleMesh(Pos(0, 0), 1, 0.25, 1.0f);
+    RectangleMesh* rect2 = new RectangleMesh(Pos(2, 2), 1, 0.25, 1.0f);
     std::vector<RectangleMesh*> renderables = {rect1, rect2};
 
     guiHelpers.printVertex(rect1->getVertices());
