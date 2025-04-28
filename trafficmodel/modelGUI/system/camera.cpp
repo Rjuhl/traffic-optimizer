@@ -5,39 +5,39 @@ window(window), viewLocation(viewLocation), projLocation(projLocation) {};
 
 void Camera::update(float deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-        cameraPos.y += 0.1 * scale * deltaTime;
+        cameraPos.y += 1.f * scale * deltaTime;
     }
 
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-        cameraPos.y -= 0.1 * scale * deltaTime;
+        cameraPos.y -= 1.f * scale * deltaTime;
     }
 
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-        cameraPos.x += 0.1 * scale * deltaTime;
+        cameraPos.x += 1.f * scale * deltaTime;
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-        cameraPos.x -= 0.1 * scale * deltaTime;
+        cameraPos.x -= 1.f * scale * deltaTime;
     }
 
 
     if (glfwGetKey(window, GLFW_KEY_EQUAL) == GLFW_PRESS) {
-        scale /= 1.1;
+        scale -= 10.f * deltaTime;
         scale = std::max(scale, 10.f);
     }
 
     if (glfwGetKey(window, GLFW_KEY_MINUS) == GLFW_PRESS) {
-        scale *= 1.1;
+        scale += 10.f * deltaTime;
         scale = std::min(scale, 1000.f);
     }
 
     
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        rotation.z += 2.f * deltaTime;
+        rotation.z += 30.f * deltaTime;
     }
 
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        rotation.z -= 2.f * deltaTime;
+        rotation.z -= 30.f * deltaTime;
     }
 
     cameraTarget = cameraPos;

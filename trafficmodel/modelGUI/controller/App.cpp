@@ -5,6 +5,7 @@
 #include "pos.h"
 #include "guiHelpers.h"
 #include "camera.h"
+#include "fpsTracker.h"
 
 App::App() {};
 
@@ -23,7 +24,7 @@ int App::run(){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
 
-    window = glfwCreateWindow(640, 480, "Traffic Optimizer", NULL, NULL);
+    window = glfwCreateWindow(640, 480, "Traffic Optimizer FPS: ...", NULL, NULL);
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -47,32 +48,28 @@ int App::run(){
     glUseProgram(shader);
 
 	//fetch uniform locations
-	unsigned int view_location = glGetUniformLocation(shader, "view");
-    unsigned int proj_location = glGetUniformLocation(shader, "projection");
+	unsigned int viewLocation = glGetUniformLocation(shader, "view");
+    unsigned int projLocation = glGetUniformLocation(shader, "projection");
 
-	// glm::vec3 camera_pos = {0.0f, 0.0f, 5.0f};
-	// glm::vec3 camera_target = {0.0f, 0.0f, 0.0f};
-	// glm::vec3 up = {0.0f, 1.0f, 0.0f};
-	// glm::mat4 view = glm::lookAt(camera_pos, camera_target, up);
-	// glUniformMatrix4fv(view_location, 1, GL_FALSE, glm::value_ptr(view));
-
-    // glm::mat4 projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 10.0f);
-    // glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(projection));
-
-    Camera* camera = new Camera(window, view_location, proj_location);
+    Camera* camera = new Camera(window, viewLocation, projLocation);
+    FPSTracker* windowTitle = new FPSTracker(window);
 
 
     RectangleMesh* rect1 = new RectangleMesh(Pos(-0.5, -0.5), Pos(0.5, 0.5), 0.25, 2.0f);
     RectangleMesh* rect2 = new RectangleMesh(Pos(2, 2), 1, 0.25, 1.0f);
     std::vector<RectangleMesh*> renderables = {rect1, rect2};
 
-    guiHelpers.printVertex(rect1->getVertices());
-    guiHelpers.printVertex(rect2->getVertices());
+    float lastFrame = 0.0f;
+    float deltaTime = 0.0f;
 
     while (!glfwWindowShouldClose(window)) {
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
         glfwPollEvents();
 
-        camera->update(0.1);
+        camera->update(deltaTime);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(shader);
@@ -81,6 +78,7 @@ int App::run(){
             rect->draw();
         }
 
+        windowTitle->update();
         glfwSwapBuffers(window);
     }
 
@@ -91,6 +89,7 @@ int App::run(){
     delete rect2;
 
     delete camera;
+    delete windowTitle;
 
     return 0;
 };
