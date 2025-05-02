@@ -33,3 +33,5 @@
 /build/*
 /.vscode/*
 trafficmodel/dependencies/googletest/
+trafficmodel/modelGUI/traffictextures/.venv
+*.DS_Store
