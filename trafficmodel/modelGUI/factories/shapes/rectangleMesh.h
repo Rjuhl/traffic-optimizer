@@ -12,8 +12,8 @@ class RectangleMesh {
 
         void bindVAO();
     public:
-        RectangleMesh(Pos p1, Pos p2, float w, float z);
-        RectangleMesh(Pos p, float h, float w, float z);
+        RectangleMesh(Pos p1, Pos p2, float w, float z, int textureId);
+        RectangleMesh(Pos p, float h, float w, float z, int textureId);
         ~RectangleMesh();
 
         void draw();

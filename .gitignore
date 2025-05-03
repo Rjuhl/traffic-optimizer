@@ -33,3 +33,4 @@
 /build/*
 /.vscode/*
 trafficmodel/dependencies/googletest/
+**.DS_Store

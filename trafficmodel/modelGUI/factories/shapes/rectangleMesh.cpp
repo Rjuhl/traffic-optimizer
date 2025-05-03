@@ -1,15 +1,25 @@
 #include "rectangleMesh.h"
+#include "mymath.h"
 
-RectangleMesh::RectangleMesh(Pos p1, Pos p2, float w, float z) {
+RectangleMesh::RectangleMesh(Pos p1, Pos p2, float w, float z, int textureId) {
     float M = (p2.y - p1.y) / (p2.x - p1.x);
     float Z = -1 / M;
     float Xbar = std::sqrt(std::pow(w / 2.0, 2) / (1 + std::pow(M, 2)));
     float Ybar =  Z * Xbar;
+    float repeat = euclideanDistance(p1, p2) / w;
+
+    // vertices = {
+    //     // Pos                        uv      uMin    uMax 
+    //     p1.x + Xbar, p1.y + Ybar, z,  0.f, 0.f,
+    //     p1.x - Xbar, p1.y - Ybar, z,  repeat, 0.f,  
+    //     p2.x + Xbar, p2.y + Ybar, z,  repeat, 1.f,
+    //     p2.x - Xbar, p2.y - Ybar, z,  0.f, 1.f,
+    // };
 
     vertices = {
-        p1.x + Xbar, p1.y + Ybar, z,
-        p1.x - Xbar, p1.y - Ybar, z,
-        p2.x + Xbar, p2.y + Ybar, z,
+        p1.x + Xbar, p1.y + Ybar, z, 
+        p1.x - Xbar, p1.y - Ybar, z, 
+        p2.x + Xbar, p2.y + Ybar, z, 
         p2.x - Xbar, p2.y - Ybar, z
     };
 
@@ -20,7 +30,7 @@ RectangleMesh::RectangleMesh(Pos p1, Pos p2, float w, float z) {
     bindVAO();
 };
 
-RectangleMesh::RectangleMesh(Pos p, float h, float w, float z) {
+RectangleMesh::RectangleMesh(Pos p, float h, float w, float z, int textureId) {
     float Xbar = w / 2;
     float Ybar = h / 2;
 
