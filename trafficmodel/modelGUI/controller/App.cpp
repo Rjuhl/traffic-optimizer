@@ -81,8 +81,8 @@ int App::run(){
     glBindTexture(GL_TEXTURE_2D, texture);
     glUniform1i(atlasLocation, 0);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -93,15 +93,15 @@ int App::run(){
 
     // Create some sample objects
     RectangleMesh* rect1 = new RectangleMesh(
-        Pos(0, -4), Pos(0, 4), 
-        2.f, 2.f,
+        Pos(0, -16), Pos(0, 16), 
+        8.f, 2.f,
         0, textWidth, textHeight,
         uvMinLocation, uvMaxLocation
     );
 
     RectangleMesh* rect4 = new RectangleMesh(
-        Pos(4, 0), Pos(6, 2), 
-        2.f, 2.f,
+        Pos(8, 0), Pos(12, 4), 
+        4.f, 2.f,
         1, textWidth, textHeight,
         uvMinLocation, uvMaxLocation
     );

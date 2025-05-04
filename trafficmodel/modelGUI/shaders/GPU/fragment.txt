@@ -13,7 +13,7 @@ void main()
 
     vec2 tiledUV = vec2(
         rawUV.x,  
-        fract(rawUV.y)           
+        fract(rawUV.y)         
     );
 
     vec2 atlasUV = uvMin + tiledUV * tileSize;
