@@ -1,26 +1,37 @@
 #include "rectangleMesh.h"
 #include "mymath.h"
+#include "guiHelpers.h"
 
-RectangleMesh::RectangleMesh(Pos p1, Pos p2, float w, float z, int textureId) {
-    float M = (p2.y - p1.y) / (p2.x - p1.x);
-    float Z = -1 / M;
-    float Xbar = std::sqrt(std::pow(w / 2.0, 2) / (1 + std::pow(M, 2)));
-    float Ybar =  Z * Xbar;
+RectangleMesh::RectangleMesh(
+    Pos p1, Pos p2, 
+    float w, float z, 
+    int textureId, int textWidth, int textHeight,
+    unsigned int UV_MIN, unsigned int UV_MAX
+) : UV_MIN(UV_MIN), UV_MAX(UV_MAX)
+{
+
+    float M, Z, Xbar, Ybar;
     float repeat = euclideanDistance(p1, p2) / w;
+    if (std::abs(p2.y - p1.y) < 1e-6) {
+        Xbar = 0.0f;
+        Ybar = w / 2.0f;
+    } else if (std::abs(p2.x - p1.x) < 1e-6) {
+        Xbar = w / 2.0f;
+        Ybar = 0.0f;
+    } else {
+        float M = (p2.y - p1.y) / (p2.x - p1.x);
+        float Z = -1 / M;
+        float Xbar = std::sqrt(std::pow(w / 2.0, 2) / (1 + std::pow(Z, 2)));
+        float Ybar =  Z * Xbar;
+    }
 
-    // vertices = {
-    //     // Pos                        uv      uMin    uMax 
-    //     p1.x + Xbar, p1.y + Ybar, z,  0.f, 0.f,
-    //     p1.x - Xbar, p1.y - Ybar, z,  repeat, 0.f,  
-    //     p2.x + Xbar, p2.y + Ybar, z,  repeat, 1.f,
-    //     p2.x - Xbar, p2.y - Ybar, z,  0.f, 1.f,
-    // };
+    uvMinMax = getUVMinMax(textureId, textWidth, textHeight);
 
-    vertices = {
-        p1.x + Xbar, p1.y + Ybar, z, 
-        p1.x - Xbar, p1.y - Ybar, z, 
-        p2.x + Xbar, p2.y + Ybar, z, 
-        p2.x - Xbar, p2.y - Ybar, z
+    vertices = {                      
+        p1.x + Xbar, p1.y + Ybar, z, 1.f, 0.f,   
+        p1.x - Xbar, p1.y - Ybar, z, 0.f, 0.f,
+        p2.x + Xbar, p2.y + Ybar, z, 1.f, repeat,
+        p2.x - Xbar, p2.y - Ybar, z, 0.f, repeat
     };
 
     indicies = {
@@ -30,15 +41,23 @@ RectangleMesh::RectangleMesh(Pos p1, Pos p2, float w, float z, int textureId) {
     bindVAO();
 };
 
-RectangleMesh::RectangleMesh(Pos p, float h, float w, float z, int textureId) {
+RectangleMesh::RectangleMesh(
+    Pos p, 
+    float h, float w, float z, 
+    int textureId, int textWidth, int textHeight,
+    unsigned int UV_MIN, unsigned int UV_MAX
+) : UV_MIN(UV_MIN), UV_MAX(UV_MAX)
+{
     float Xbar = w / 2;
     float Ybar = h / 2;
 
+    uvMinMax = getUVMinMax(textureId, textWidth, textHeight);
+
     vertices = {
-        p.x - Xbar, p.y - Ybar, z,
-        p.x - Xbar, p.y + Ybar, z,
-        p.x + Xbar, p.y + Ybar, z,
-        p.x + Xbar, p.y - Ybar, z
+        p.x - Xbar, p.y - Ybar, z, 0.f, 1.f, 
+        p.x - Xbar, p.y + Ybar, z, 0.f, 0.f,
+        p.x + Xbar, p.y + Ybar, z, 1.f, 0.f,
+        p.x + Xbar, p.y - Ybar, z, 1.f, 1.f
     };
 
     indicies = {
@@ -55,6 +74,20 @@ RectangleMesh::~RectangleMesh() {
     glDeleteBuffers(1, &EBO);
 };
 
+std::vector<float> RectangleMesh::getUVMinMax(int textureId, int textWidth, int textHeight) {
+    int blocksPerRow = textWidth / TILE_SIZE;
+    int row = textureId / blocksPerRow;
+    int col = textureId % blocksPerRow;
+
+    float uStep = (float)TILE_SIZE / (float)textWidth;
+    float vStep = (float)TILE_SIZE / (float)textHeight;
+
+    return std::vector<float>{
+        col * uStep, (1 - (row * vStep)) - vStep,
+        (col * uStep) + uStep, (1 - (row * vStep))
+    };
+}
+
 void RectangleMesh::bindVAO() {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -63,8 +96,12 @@ void RectangleMesh::bindVAO() {
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,  3 * sizeof(float), (void*)0);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     //element buffer
     glGenBuffers(1, &EBO);
@@ -74,6 +111,8 @@ void RectangleMesh::bindVAO() {
 
 void RectangleMesh::draw() {
     glBindVertexArray(VAO);
+    glUniform2f(UV_MIN, uvMinMax[0], uvMinMax[1]);
+    glUniform2f(UV_MAX, uvMinMax[2], uvMinMax[3]);
     glDrawElements(GL_TRIANGLES, ELEM_COUNT, GL_UNSIGNED_INT, 0);
 };
 

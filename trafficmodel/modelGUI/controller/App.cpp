@@ -54,22 +54,32 @@ int App::run(){
 	//fetch uniform locations
 	unsigned int viewLocation = glGetUniformLocation(shader, "view");
     unsigned int projLocation = glGetUniformLocation(shader, "projection");
+    unsigned int uvMinLocation = glGetUniformLocation(shader, "uvMin");
+    unsigned int uvMaxLocation = glGetUniformLocation(shader, "uvMax");
+    unsigned int atlasLocation = glGetUniformLocation(shader, "atlas");
 
     //Create camera
     Camera* camera = new Camera(window, viewLocation, projLocation);
     FPSTracker* windowTitle = new FPSTracker(window);
 
     //Create texture map
+    stbi_set_flip_vertically_on_load(1);
     int textWidth, textHeight, textChannels;
-    unsigned char* textureImg =  stbi_load(
-        "../shaders/textures/texture_map.png", 
+    unsigned char* textureImg = stbi_load(
+        "../trafficmodel/modelGUI/shaders/textures/texture_map.png", 
         &textWidth, &textHeight, &textChannels, 0
     );
+
+    if (!textureImg) {
+        printf("Can't load texture -- %s\n", stbi_failure_reason());
+        exit(0);
+    };
     
     GLuint texture;
     glGenTextures(1, &texture);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
+    glUniform1i(atlasLocation, 0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -80,13 +90,35 @@ int App::run(){
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(textureImg);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
 
     // Create some sample objects
-    RectangleMesh* rect1 = new RectangleMesh(Pos(-0.5, -0.5), Pos(0.5, 0.5), 0.25, 2.0f, 0);
-    RectangleMesh* rect2 = new RectangleMesh(Pos(2, 2), 1, 0.25, 1.0f, 0);
-    std::vector<RectangleMesh*> renderables = {rect1, rect2};
+    RectangleMesh* rect1 = new RectangleMesh(
+        Pos(0, -4), Pos(0, 4), 
+        2.f, 2.f,
+        0, textWidth, textHeight,
+        uvMinLocation, uvMaxLocation
+    );
+
+    RectangleMesh* rect4 = new RectangleMesh(
+        Pos(4, 0), Pos(6, 2), 
+        2.f, 2.f,
+        1, textWidth, textHeight,
+        uvMinLocation, uvMaxLocation
+    );
+    RectangleMesh* rect2 = new RectangleMesh(
+        Pos(4, 0), 
+        1.f, 2.f, 1.0f, 
+        0, textWidth, textHeight,
+        uvMinLocation, uvMaxLocation
+    );
+
+    RectangleMesh* rect3 = new RectangleMesh(
+        Pos(-4, 0), 
+        2.f, 2.f, 1.0f, 
+        0, textWidth, textHeight,
+        uvMinLocation, uvMaxLocation
+    );
+    std::vector<RectangleMesh*> renderables = {rect1, rect4};
 
     //Init delta time 
     float lastFrame = 0.0f;
@@ -118,6 +150,8 @@ int App::run(){
 
     delete rect1;
     delete rect2;
+    delete rect3;
+    delete rect4;
 
     delete camera;
     delete windowTitle;

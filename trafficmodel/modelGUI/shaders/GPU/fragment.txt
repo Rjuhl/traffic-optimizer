@@ -1,8 +1,21 @@
 #version 330 core
 
-out vec3 FragColor;
+in vec2 rawUV;
+out vec4 FragColor;
+
+uniform sampler2D atlas;
+uniform vec2 uvMin;  
+uniform vec2 uvMax;
 
 void main()
 {
-    FragColor = vec3(1.0, 0.0, 0.0);
+    vec2 tileSize = uvMax - uvMin;
+
+    vec2 tiledUV = vec2(
+        rawUV.x,  
+        fract(rawUV.y)           
+    );
+
+    vec2 atlasUV = uvMin + tiledUV * tileSize;
+    FragColor = texture(atlas, atlasUV);
 }

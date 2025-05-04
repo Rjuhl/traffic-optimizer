@@ -1,13 +1,18 @@
 #version 330 core
 
-// Vertex
+//Vertex
 layout (location=0) in vec3 vertexPos;
+layout (location=1) in vec2 rUV;
 
 //Uniforms
 uniform mat4 view;
 uniform mat4 projection;
 
+//Out vars
+out vec2 rawUV;
+
 void main()
 {
     gl_Position = projection * view * vec4(vertexPos, 1.0);
+    rawUV = rUV;
 }

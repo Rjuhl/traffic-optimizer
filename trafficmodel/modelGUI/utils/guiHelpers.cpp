@@ -8,3 +8,10 @@ void GUIHelpers::printVertex(std::vector<float> verticies) {
     }
     std::cout << std::endl;
 };
+
+void GUIHelpers::printfVector(std::vector<float> vec) {
+    for (int i = 0; i < vec.size() - 1; i++) {
+        std::cout << vec[i] << ", ";
+    }
+    std::cout << vec[vec.size() - 1] << std::endl;
+};
