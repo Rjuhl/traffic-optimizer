@@ -6,6 +6,8 @@
 #include "guiHelpers.h"
 #include "camera.h"
 #include "fpsTracker.h"
+#include "meshFactory.h"
+#include "textureConstants.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
@@ -91,34 +93,22 @@ int App::run(){
 
     stbi_image_free(textureImg);
 
+    // Create mesh factory
+    MeshFactory* meshFactory = new MeshFactory(
+        textWidth, textHeight,
+        uvMinLocation, uvMaxLocation
+    );
+
     // Create some sample objects
-    RectangleMesh* rect1 = new RectangleMesh(
-        Pos(1, 1), Pos(4, 4), 
-        1.f, 2.f, false,
-        3, textWidth, textHeight,
-        uvMinLocation, uvMaxLocation
-    );
+    RectangleMesh* rect3 = meshFactory->makeOneWayRoad(Pos(-8, 0), Pos(-6, 4));
+    RectangleMesh* rect1 = meshFactory->makeTwoWayRoad(Pos(-1, 0), Pos(-9, 0));
+    RectangleMesh* rect4 = meshFactory->makeCar(Pos(-3, 0), Pos(-1, 0), Pos(-9, 0), 1);
+    RectangleMesh* rect2 = meshFactory->makeCar(Pos(-7, 0), Pos(-9, 0), Pos(-1, 0), 2);
+    RectangleMesh* rect5 = meshFactory->makeTwoWayRoad(Pos(0,-8), Pos(8, 0));
+    RectangleMesh* rect6 = meshFactory->makeCar(Pos(4, -4), Pos(0, -8), Pos(8, 0), 0);
 
-    RectangleMesh* rect4 = new RectangleMesh(
-        Pos(-1, -1), Pos(-4, -4), 
-        1.f, 2.f, false,
-        2, textWidth, textHeight,
-        uvMinLocation, uvMaxLocation
-    );
-    RectangleMesh* rect2 = new RectangleMesh(
-        Pos(4, 0), 
-        1.f, 2.f, 1.0f, 
-        0, textWidth, textHeight,
-        uvMinLocation, uvMaxLocation
-    );
 
-    RectangleMesh* rect3 = new RectangleMesh(
-        Pos(-4, 0), 
-        2.f, 2.f, 1.0f, 
-        0, textWidth, textHeight,
-        uvMinLocation, uvMaxLocation
-    );
-    std::vector<RectangleMesh*> renderables = {rect1, rect4};
+    std::vector<RectangleMesh*> renderables = {rect1, rect2, rect4, rect5, rect6};
 
     //Init delta time 
     float lastFrame = 0.0f;
@@ -152,6 +142,8 @@ int App::run(){
     delete rect2;
     delete rect3;
     delete rect4;
+    delete rect5;
+    delete rect6;
 
     delete camera;
     delete windowTitle;

@@ -19,7 +19,7 @@ RectangleMesh::RectangleMesh(
         Xbar = w / 2.0f;
         Ybar = 0.0f;
     } else {
-        M = (p2.y - p1.y) / (p2.x - p1.x);
+        M = slope(p1, p2);
         Z = -1 / M;
         Xbar = std::sqrt(std::pow(w / 2.0, 2) / (1 + std::pow(Z, 2)));
         Ybar =  Z * Xbar;
@@ -54,10 +54,10 @@ RectangleMesh::RectangleMesh(
     uvMinMax = getUVMinMax(textureId, textWidth, textHeight);
 
     vertices = {
-        p.x - Xbar, p.y - Ybar, z, 0.f, 1.f, 
-        p.x - Xbar, p.y + Ybar, z, 0.f, 0.f,
-        p.x + Xbar, p.y + Ybar, z, 1.f, 0.f,
-        p.x + Xbar, p.y - Ybar, z, 1.f, 1.f
+        p.x - Xbar, p.y - Ybar, z, 0.f, 0.f, 
+        p.x - Xbar, p.y + Ybar, z, 0.f, 1.f,
+        p.x + Xbar, p.y + Ybar, z, 1.f, 1.f,
+        p.x + Xbar, p.y - Ybar, z, 1.f, 0.f
     };
 
     indicies = {

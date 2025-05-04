@@ -1,9 +1,12 @@
 #pragma once
-#define ONE_WAY_ROAD = 1
-#define TWO_WAY_ROAD = 2
-#define RED_CAR = 3
-#define GREEN_CAR = 4
-#define BLUE_CAR = 5
-#define GARAGE = 6
-#define DESTINATION = 7
-#define INTERSECTION = 8
+
+enum TextId {
+    ONE_WAY_ROAD = 0,
+    TWO_WAY_ROAD = 1,
+    RED_CAR = 2,
+    GREEN_CAR = 3,
+    BLUE_CAR = 4,
+    GARAGE = 5,
+    DESTINATION = 6,
+    INTERSECTION = 7
+};
