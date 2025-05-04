@@ -22,7 +22,7 @@ class RectangleMesh {
     public:
         RectangleMesh(
             Pos p1, Pos p2,
-            float w, float z, 
+            float w, float z, bool isRepeating,
             int textureId, int textWidth, int textHeight,
             unsigned int UV_MIN, unsigned int UV_MAX
         );

@@ -4,14 +4,14 @@
 
 RectangleMesh::RectangleMesh(
     Pos p1, Pos p2, 
-    float w, float z, 
+    float w, float z, bool isRepeating, 
     int textureId, int textWidth, int textHeight,
     unsigned int UV_MIN, unsigned int UV_MAX
 ) : UV_MIN(UV_MIN), UV_MAX(UV_MAX)
 {
 
-    float M, Z, Xbar, Ybar;
-    float repeat = euclideanDistance(p1, p2) / w;
+    float M, Z, Xbar, Ybar, repeat;
+    isRepeating ? repeat = euclideanDistance(p1, p2) / w : repeat = 1.f;
     if (std::abs(p2.y - p1.y) < 1e-6) {
         Xbar = 0.0f;
         Ybar = w / 2.0f;
@@ -19,10 +19,10 @@ RectangleMesh::RectangleMesh(
         Xbar = w / 2.0f;
         Ybar = 0.0f;
     } else {
-        float M = (p2.y - p1.y) / (p2.x - p1.x);
-        float Z = -1 / M;
-        float Xbar = std::sqrt(std::pow(w / 2.0, 2) / (1 + std::pow(Z, 2)));
-        float Ybar =  Z * Xbar;
+        M = (p2.y - p1.y) / (p2.x - p1.x);
+        Z = -1 / M;
+        Xbar = std::sqrt(std::pow(w / 2.0, 2) / (1 + std::pow(Z, 2)));
+        Ybar =  Z * Xbar;
     }
 
     uvMinMax = getUVMinMax(textureId, textWidth, textHeight);

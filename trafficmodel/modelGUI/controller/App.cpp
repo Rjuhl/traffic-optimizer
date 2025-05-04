@@ -93,16 +93,16 @@ int App::run(){
 
     // Create some sample objects
     RectangleMesh* rect1 = new RectangleMesh(
-        Pos(0, -16), Pos(0, 16), 
-        8.f, 2.f,
-        0, textWidth, textHeight,
+        Pos(1, 1), Pos(4, 4), 
+        1.f, 2.f, false,
+        3, textWidth, textHeight,
         uvMinLocation, uvMaxLocation
     );
 
     RectangleMesh* rect4 = new RectangleMesh(
-        Pos(8, 0), Pos(12, 4), 
-        4.f, 2.f,
-        1, textWidth, textHeight,
+        Pos(-1, -1), Pos(-4, -4), 
+        1.f, 2.f, false,
+        2, textWidth, textHeight,
         uvMinLocation, uvMaxLocation
     );
     RectangleMesh* rect2 = new RectangleMesh(
