@@ -25,6 +25,9 @@ target_include_directories(
     ${CMAKE_SOURCE_DIR}/modelGUI/factories/shapes
     ${CMAKE_SOURCE_DIR}/modelGUI/shaders
     ${CMAKE_SOURCE_DIR}/modelGUI/system
+    ${CMAKE_SOURCE_DIR}/modelGUI/ui
+    ${CMAKE_SOURCE_DIR}/modelGUI/ui/interfaces
+    ${CMAKE_SOURCE_DIR}/modelGUI/ui/implemetations
 )
 
 target_link_libraries(

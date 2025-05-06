@@ -147,6 +147,7 @@ int App::run(){
 
     delete camera;
     delete windowTitle;
+    delete meshFactory;
 
     return 0;
 };
