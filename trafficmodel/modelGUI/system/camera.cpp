@@ -1,7 +1,10 @@
 #include "camera.h"
 
-Camera::Camera(GLFWwindow* window, unsigned int viewLocation, unsigned int projLocation) : 
-window(window), viewLocation(viewLocation), projLocation(projLocation) {};
+Camera::Camera(GLFWwindow* window, unsigned int shader) : 
+window(window), shader(shader),
+viewLocation(glGetUniformLocation(shader, "view")), projLocation(glGetUniformLocation(shader, "projection")) {
+    glfwGetFramebufferSize(window, &width, &height);
+};
 
 void Camera::update(float deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
@@ -43,6 +46,9 @@ void Camera::update(float deltaTime) {
     cameraTarget = cameraPos;
     cameraTarget.z = 0.f;
     cameraPos.z = scale;
+
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) reset();
+
     glm::mat4 view = glm::rotate(glm::lookAt(cameraPos, cameraTarget, up), glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
     glm::mat4 projection = glm::ortho(-scale, scale, -scale, scale, 0.1f, scale);
 
@@ -50,4 +56,16 @@ void Camera::update(float deltaTime) {
     glUniformMatrix4fv(projLocation, 1, GL_FALSE, glm::value_ptr(projection));
 };
 
-void Camera::reset() {};
+void Camera::setUIView() {
+    glm::mat4 ortho = glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height)); 
+    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
+    glUniformMatrix4fv(projLocation, 1, GL_FALSE, glm::value_ptr(ortho));
+}
+
+void Camera::reset() {
+    scale = 10.f;
+    cameraPos = {0.0f, 0.0f, scale};
+    cameraTarget = {0.0f, 0.0f, 0.0f};
+    up = {0.0f, 1.0f, 0.0f};
+    rotation = {0.0f, 0.0f, 0.0f};
+};

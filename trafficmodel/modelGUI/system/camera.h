@@ -4,8 +4,8 @@
 class Camera {
     private:
         GLFWwindow* window;
-        unsigned int viewLocation;
-        unsigned int projLocation;
+        int width, height;
+        unsigned int shader, viewLocation, projLocation;
         float scale = 10.f;
         glm::vec3 cameraPos = {0.0f, 0.0f, scale};
         glm::vec3 cameraTarget = {0.0f, 0.0f, 0.0f};
@@ -15,6 +15,7 @@ class Camera {
         void reset();
 
     public:
-        Camera(GLFWwindow* window, unsigned int viewLocation, unsigned int projLocation);
+        Camera(GLFWwindow* window, unsigned int shader);
         void update(float deltaTime);
+        void setUIView();
 };
