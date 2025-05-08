@@ -3,6 +3,7 @@
 #include "textureConstants.h"
 #include "imap.h"
 #include "rectangleMesh.h"
+#include "atlas.h"
 
 
 class MeshFactory {
@@ -27,10 +28,7 @@ class MeshFactory {
         static constexpr float CAR_OFFSET = 0.5;
 
     public:
-        MeshFactory(
-            int textWidth, int textHeight, 
-            unsigned int UV_MIN, unsigned int UV_MAX
-        );
+        MeshFactory(Atlas* atlas);
 
         ~MeshFactory();
 

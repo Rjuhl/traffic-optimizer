@@ -8,5 +8,6 @@ enum TextId {
     BLUE_CAR = 4,
     GARAGE = 5,
     DESTINATION = 6,
-    INTERSECTION = 7
+    INTERSECTION = 7,
+    UI = 8
 };

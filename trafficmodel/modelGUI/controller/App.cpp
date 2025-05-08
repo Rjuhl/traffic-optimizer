@@ -8,6 +8,7 @@
 #include "fpsTracker.h"
 #include "meshFactory.h"
 #include "textureConstants.h"
+#include "atlas.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
@@ -56,48 +57,16 @@ int App::run(){
 	//fetch uniform locations
 	unsigned int viewLocation = glGetUniformLocation(shader, "view");
     unsigned int projLocation = glGetUniformLocation(shader, "projection");
-    unsigned int uvMinLocation = glGetUniformLocation(shader, "uvMin");
-    unsigned int uvMaxLocation = glGetUniformLocation(shader, "uvMax");
-    unsigned int atlasLocation = glGetUniformLocation(shader, "atlas");
 
     //Create camera
     Camera* camera = new Camera(window, viewLocation, projLocation);
     FPSTracker* windowTitle = new FPSTracker(window);
 
     //Create texture map
-    stbi_set_flip_vertically_on_load(1);
-    int textWidth, textHeight, textChannels;
-    unsigned char* textureImg = stbi_load(
-        "../trafficmodel/modelGUI/shaders/textures/texture_map.png", 
-        &textWidth, &textHeight, &textChannels, 0
-    );
-
-    if (!textureImg) {
-        printf("Can't load texture -- %s\n", stbi_failure_reason());
-        exit(0);
-    };
-    
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(atlasLocation, 0);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textWidth, textHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureImg);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    stbi_image_free(textureImg);
+    Atlas* atlas = new Atlas("../trafficmodel/modelGUI/shaders/textures/texture_map.png", shader, 64.f);
 
     // Create mesh factory
-    MeshFactory* meshFactory = new MeshFactory(
-        textWidth, textHeight,
-        uvMinLocation, uvMaxLocation
-    );
+    MeshFactory* meshFactory = new MeshFactory(atlas);
 
     // Create some sample objects
     RectangleMesh* rect3 = meshFactory->makeOneWayRoad(Pos(-8, 0), Pos(-6, 4));
@@ -134,10 +103,6 @@ int App::run(){
         glfwSwapBuffers(window);
     }
 
-    glDeleteTextures(1, &texture);
-    glDeleteProgram(shader);
-    glfwTerminate();
-
     delete rect1;
     delete rect2;
     delete rect3;
@@ -147,7 +112,11 @@ int App::run(){
 
     delete camera;
     delete windowTitle;
+    delete atlas;
     delete meshFactory;
+
+    glDeleteProgram(shader);
+    glfwTerminate();
 
     return 0;
 };

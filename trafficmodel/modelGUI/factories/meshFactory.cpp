@@ -9,9 +9,10 @@ const IMap<int> MeshFactory::zMap({
 });
 
 MeshFactory::MeshFactory(
-    int textWidth, int textHeight, 
-    unsigned int UV_MIN, unsigned int UV_MAX
-) : textWidth(textWidth), textHeight(textHeight), UV_MIN(UV_MIN), UV_MAX(UV_MAX)
+    Atlas* atlas
+) : 
+textWidth(atlas->textWidth), textHeight(atlas->textHeight), 
+UV_MIN(atlas->uvMinLocation), UV_MAX(atlas->uvMaxLocation)
 {};
 
 MeshFactory::~MeshFactory(){};

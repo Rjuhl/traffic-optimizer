@@ -1,32 +1,44 @@
 #pragma once
 #include "config.h"
+#include "atlas.h"
 #include "componentState.h"
-#include "positionConstraint.h"
-#include "sizeConstraint.h"
+#include "componentConstraint.h"
 
 class UIComponent{
     private:
-        int textureId;
-        unsigned int UV_MIN, UV_MIX, COLOR;
+        int texture;
+        glm::vec4 color;
+        glm::vec2 size;
+        glm::vec2 position;
+        unsigned int ELEM_COUNT = 6;
+        unsigned int EBO, VBO, VAO;
 
-        glm::vec4 position;
-
+        Atlas* atlas;
         GLFWwindow* window;
         UIComponent* parent;
         ComponentState* state;
-        PositionConstraint* position;
+        ComponentConstraint* sizeConstraint;
+        ComponentConstraint* positionContraint;
+
+        void bindVAO();
+        std::vector<float> getVertices();
+        std::vector<float> getUVMinMax();
 
         friend class ComponentState;
-        friend class PositionConstraint;
-        friend class SizeConstraint;
         
     public:
-        UIComponent();
+        UIComponent(
+            Atlas* atlas,
+            GLFWwindow* window,
+            UIComponent* parent,
+            ComponentState* state,
+            ComponentConstraint* sizeConstraint,
+            ComponentConstraint* positionContraint
+        );
         ~UIComponent();
 
         void Init();
+        void update();
         void draw();
-
-        // Returns UI x, y pos and w/h
-        glm::vec4 getPosition();
+        void updateAndDraw();
 };
