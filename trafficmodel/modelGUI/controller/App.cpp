@@ -1,5 +1,4 @@
 #include "App.h"
-#include "config.h"
 #include "shaders.h"
 #include "rectangleMesh.h"
 #include "pos.h"
@@ -19,33 +18,7 @@ int App::run(){
     std::cout << "In Main" << std::endl;
 
     GLFWwindow* window;
-
-    if(!glfwInit()){
-        std::cout << "GLFW would not start" << std::endl;
-        return -1;
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-
-    window = glfwCreateWindow(640, 480, "Traffic Optimizer FPS: ...", NULL, NULL);
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cout << "Glad loader failed" << std::endl;
-        return -1;
-    }
-
-    glClearColor(0.95f, 0.95f, 0.95f, 1.0f);
-    glEnable(GL_DEPTH_TEST);
-
-    // Set the rendering region to the actual screen size
-	int w,h;
-	glfwGetFramebufferSize(window, &w, &h);
-	// (left, top, width, height)
-	glViewport(0,0,w,h);
+    if (glfwWindowInit(&window) != 0) return -1;
 
     //load shaders
     unsigned int shader = make_shader(
@@ -54,17 +27,13 @@ int App::run(){
 	);
     glUseProgram(shader);
 
-	//fetch uniform locations
-	unsigned int viewLocation = glGetUniformLocation(shader, "view");
-    unsigned int projLocation = glGetUniformLocation(shader, "projection");
-
     //Create camera
-    Camera* camera = new Camera(window, viewLocation, projLocation);
+    Camera* camera = new Camera(window, shader);
     FPSTracker* windowTitle = new FPSTracker(window);
 
     //Create texture map
     Atlas* atlas = new Atlas("../trafficmodel/modelGUI/shaders/textures/texture_map.png", shader, 64.f);
-
+  
     // Create mesh factory
     MeshFactory* meshFactory = new MeshFactory(atlas);
 
@@ -82,16 +51,15 @@ int App::run(){
     //Init delta time 
     float lastFrame = 0.0f;
     float deltaTime = 0.0f;
-
     while (!glfwWindowShouldClose(window)) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
         glfwPollEvents();
-
         camera->update(deltaTime);
 
+        
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(shader);
 
@@ -102,6 +70,7 @@ int App::run(){
         windowTitle->update();
         glfwSwapBuffers(window);
     }
+
 
     delete rect1;
     delete rect2;
@@ -118,5 +87,35 @@ int App::run(){
     glDeleteProgram(shader);
     glfwTerminate();
 
+    return 0;
+};
+
+int App::glfwWindowInit(GLFWwindow** window) {
+    if(!glfwInit()){
+        std::cout << "GLFW would not start" << std::endl;
+        return -1;
+    }
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+
+    *window = glfwCreateWindow(640, 480, "Traffic Optimizer FPS: ...", NULL, NULL);
+    glfwMakeContextCurrent(*window);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cout << "Glad loader failed" << std::endl;
+        return -1;
+    }
+
+    glClearColor(0.95f, 0.95f, 0.95f, 1.0f);
+    glEnable(GL_DEPTH_TEST);
+
+    // Set the rendering region to the actual screen size
+	int w,h;
+	glfwGetFramebufferSize(*window, &w, &h);
+	// (left, top, width, height)
+	glViewport(0,0,w,h);
     return 0;
 };
