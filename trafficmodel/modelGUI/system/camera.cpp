@@ -2,7 +2,7 @@
 
 Camera::Camera(GLFWwindow* window, unsigned int shader) : 
 window(window), shader(shader),
-viewLocation(glGetUniformLocation(shader, "view")), projLocation(glGetUniformLocation(shader, "projection")) {
+screenspaceLocation(glGetUniformLocation(shader, "screenspace")) {
     glfwGetFramebufferSize(window, &width, &height);
 };
 
@@ -51,15 +51,14 @@ void Camera::update(float deltaTime) {
 
     glm::mat4 view = glm::rotate(glm::lookAt(cameraPos, cameraTarget, up), glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
     glm::mat4 projection = glm::ortho(-scale, scale, -scale, scale, 0.1f, scale);
+    screenspace = projection * view;
 
-    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projLocation, 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(screenspaceLocation, 1, GL_FALSE, glm::value_ptr(screenspace));
 };
 
 void Camera::setUIView() {
     glm::mat4 ortho = glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height)); 
-    glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
-    glUniformMatrix4fv(projLocation, 1, GL_FALSE, glm::value_ptr(ortho));
+    glUniformMatrix4fv(screenspaceLocation, 1, GL_FALSE, glm::value_ptr(ortho));
 }
 
 void Camera::reset() {
@@ -69,3 +68,7 @@ void Camera::reset() {
     up = {0.0f, 1.0f, 0.0f};
     rotation = {0.0f, 0.0f, 0.0f};
 };
+
+GLFWwindow* Camera::getWindow() { return window; };
+glm::mat4 Camera::getScreenSpace() { return screenspace; };
+glm::vec2 Camera::getScreenSize() { return glm::vec2(width, height); };

@@ -8,6 +8,7 @@
 #include "meshFactory.h"
 #include "textureConstants.h"
 #include "atlas.h"
+#include "renderer.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
@@ -38,15 +39,20 @@ int App::run(){
     MeshFactory* meshFactory = new MeshFactory(atlas);
 
     // Create some sample objects
-    RectangleMesh* rect3 = meshFactory->makeOneWayRoad(Pos(-8, 0), Pos(-6, 4));
+    RectangleMesh* rect3 = meshFactory->makeDestination(Pos(0,6));
     RectangleMesh* rect1 = meshFactory->makeTwoWayRoad(Pos(-1, 0), Pos(-9, 0));
     RectangleMesh* rect4 = meshFactory->makeCar(Pos(-3, 0), Pos(-1, 0), Pos(-9, 0), 1);
     RectangleMesh* rect2 = meshFactory->makeCar(Pos(-7, 0), Pos(-9, 0), Pos(-1, 0), 2);
     RectangleMesh* rect5 = meshFactory->makeTwoWayRoad(Pos(0,-8), Pos(8, 0));
     RectangleMesh* rect6 = meshFactory->makeCar(Pos(4, -4), Pos(0, -8), Pos(8, 0), 0);
 
+    std::vector<RectangleMesh*> renderables = {rect1, rect3, rect2, rect4, rect5, rect6};
 
-    std::vector<RectangleMesh*> renderables = {rect1, rect2, rect4, rect5, rect6};
+    // Create Renderer 
+    Renderer* renderer = new Renderer(camera, shader);
+    for (auto rect : renderables) {
+        renderer->addGameObj(rect);
+    }
 
     //Init delta time 
     float lastFrame = 0.0f;
@@ -57,15 +63,11 @@ int App::run(){
         lastFrame = currentFrame;
 
         glfwPollEvents();
-        camera->update(deltaTime);
-
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(shader);
 
-        for (auto rect : renderables) {
-            rect->draw();
-        }
+        renderer->renderFrame(deltaTime);
 
         windowTitle->update();
         glfwSwapBuffers(window);
@@ -83,6 +85,7 @@ int App::run(){
     delete windowTitle;
     delete atlas;
     delete meshFactory;
+    delete renderer;
 
     glDeleteProgram(shader);
     glfwTerminate();

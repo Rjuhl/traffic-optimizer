@@ -6,11 +6,11 @@ template<typename T>
 struct WithId {
     uint32_t id;
     T value;
-    WithId(uint32_t id, const T& value) : id(id), value(value) {}
+    WithId(uint32_t id, const T& value) : id(id), value(value) {};
 };
 
 template<typename T>
-class RenderSet {
+class render_set {
     private:
         uint32_t nextId = 0;
         std::vector<uint32_t> availableIds;
@@ -18,7 +18,7 @@ class RenderSet {
     public:
         std::vector<WithId<T>> components;
         
-        ComponentSet() {
+        render_set() {
             components.reserve(COMP_SET_MAX_OBJ);
         };
 
@@ -33,7 +33,7 @@ class RenderSet {
 
         uint32_t add(T obj) {
             if (components.size() >= COMP_SET_MAX_OBJ && availableIds.empty()) {
-                throw std::runtime_error("ComponentSet is full");
+                throw std::runtime_error("render set is full");
             }            
 
             uint32_t id = nextId;

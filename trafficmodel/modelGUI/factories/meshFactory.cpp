@@ -19,7 +19,7 @@ MeshFactory::~MeshFactory(){};
 
 RectangleMesh* MeshFactory::makeIntersection(Pos p) {
     return new RectangleMesh(
-        p,
+        p, highlight,
         INTERSECTION_HEIGHT, INTERSECTION_WIDTH, 
         zMap.get(TextId::INTERSECTION),
         TextId::INTERSECTION, textWidth, textHeight,
@@ -29,7 +29,7 @@ RectangleMesh* MeshFactory::makeIntersection(Pos p) {
 
 RectangleMesh* MeshFactory::makeGarage(Pos p) {
     return new RectangleMesh(
-        p,
+        p, highlight,
         GARAGE_HEIGHT, GARAGE_WIDTH,
         zMap.get(TextId::GARAGE),
         TextId::GARAGE, textWidth, textHeight,
@@ -38,7 +38,7 @@ RectangleMesh* MeshFactory::makeGarage(Pos p) {
 };
 RectangleMesh* MeshFactory::makeDestination(Pos p) {
     return new RectangleMesh(
-        p,
+        p, highlight,
         DESTINATION_HEIGHT, DESTINATION_WIDTH, 
         zMap.get(TextId::DESTINATION),
         TextId::DESTINATION, textWidth, textHeight,
@@ -48,7 +48,7 @@ RectangleMesh* MeshFactory::makeDestination(Pos p) {
 
 RectangleMesh* MeshFactory::makeOneWayRoad(Pos p1, Pos p2) {
     return new RectangleMesh (
-        p1, p2,
+        p1, p2, highlight,
         ROAD_WIDTH, zMap.get(TextId::ONE_WAY_ROAD), true,
         TextId::ONE_WAY_ROAD, textWidth, textHeight,
         UV_MIN, UV_MAX
@@ -57,7 +57,7 @@ RectangleMesh* MeshFactory::makeOneWayRoad(Pos p1, Pos p2) {
 
 RectangleMesh* MeshFactory::makeTwoWayRoad(Pos p1, Pos p2) {
     return new RectangleMesh(
-        p1, p2,
+        p1, p2, highlight,
         ROAD_WIDTH, zMap.get(TextId::TWO_WAY_ROAD), true,
         TextId::TWO_WAY_ROAD, textWidth, textHeight,
         UV_MIN, UV_MAX
@@ -97,7 +97,7 @@ RectangleMesh* MeshFactory::makeCar(Pos c, Pos rStart, Pos rEnd, int color) {
     glm::vec2 p2 = (car + (XYBar * exspansionDir)) + OffsetXYBar;
 
     return new RectangleMesh(
-        Pos(p1.x, p1.y), Pos(p2.x, p2.y),
+        Pos(p1.x, p1.y), Pos(p2.x, p2.y), glm::vec4(0.f, 0.f, 0.f, 0.f),
         CAR_WIDTH, zMap.get(TextId::BLUE_CAR), false,
         TextId::RED_CAR + color, textWidth, textHeight,
         UV_MIN, UV_MAX

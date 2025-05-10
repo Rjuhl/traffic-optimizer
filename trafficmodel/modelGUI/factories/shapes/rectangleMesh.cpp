@@ -3,11 +3,11 @@
 #include "guiHelpers.h"
 
 RectangleMesh::RectangleMesh(
-    Pos p1, Pos p2, 
+    Pos p1, Pos p2, glm::vec4 highlight, 
     float w, float z, bool isRepeating, 
     int textureId, int textWidth, int textHeight,
     unsigned int UV_MIN, unsigned int UV_MAX
-) : UV_MIN(UV_MIN), UV_MAX(UV_MAX)
+) : highlight(highlight), UV_MIN(UV_MIN), UV_MAX(UV_MAX)
 {
 
     float M, Z, Xbar, Ybar, repeat;
@@ -42,7 +42,7 @@ RectangleMesh::RectangleMesh(
 };
 
 RectangleMesh::RectangleMesh(
-    Pos p, 
+    Pos p, glm::vec4 highlight,
     float h, float w, float z, 
     int textureId, int textWidth, int textHeight,
     unsigned int UV_MIN, unsigned int UV_MAX
@@ -117,4 +117,5 @@ void RectangleMesh::draw() {
 };
 
 std::vector<float> RectangleMesh::getVertices() { return vertices; };
-std::vector<int> RectangleMesh::getIndicies() {return indicies; };
+std::vector<int> RectangleMesh::getIndicies() { return indicies; };
+glm::vec4 RectangleMesh::getHighlight() { return highlight; };

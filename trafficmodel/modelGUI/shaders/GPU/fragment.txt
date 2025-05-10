@@ -18,6 +18,10 @@ void main()
     );
 
     vec2 atlasUV = uvMin + tiledUV * tileSize;
-    FragColor = texture(atlas, atlasUV);
+    FragColor = vec4(
+        clamp(texture(atlas, atlasUV).rgb * (1.0 + color.rgb), 0.0, 1.0), 
+        texture(atlas, atlasUV).a
+    );
+
     if (FragColor.a < 0.1) discard;
 }

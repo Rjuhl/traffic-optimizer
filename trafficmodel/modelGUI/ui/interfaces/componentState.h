@@ -22,3 +22,4 @@ class ComponentState {
             setTexture();
         };
 };
+

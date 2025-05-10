@@ -18,17 +18,19 @@ class RectangleMesh {
             int textureId, int textWidth, int textHeight
         );
 
+        glm::vec4 highlight;
+
         void bindVAO();
     public:
         RectangleMesh(
-            Pos p1, Pos p2,
+            Pos p1, Pos p2, glm::vec4 highlight, 
             float w, float z, bool isRepeating,
             int textureId, int textWidth, int textHeight,
             unsigned int UV_MIN, unsigned int UV_MAX
         );
         RectangleMesh(
-            Pos p, 
-            float h, float w, float z, 
+            Pos p, glm::vec4 highlight, 
+            float h, float w, float z,
             int textureId, int textWidth, int textHeight,
             unsigned int UV_MIN, unsigned int UV_MAX
         );
@@ -38,5 +40,6 @@ class RectangleMesh {
 
         std::vector<float> getVertices();
         std::vector<int> getIndicies();
+        glm::vec4 getHighlight();
         
 };

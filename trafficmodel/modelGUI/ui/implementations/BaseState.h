@@ -11,8 +11,8 @@ class BaseState : public ComponentState {
 
         bool isOverlap() {
             return(
-                uiComp->poisiton.x <= mouseX <= uiComp->poisiton.x + uiComp->size.x &&
-                uiComp->poisiton.y <= mouseY <= uiComp->poisiton.y + uiComp->size.y
+                uiComp->position.x <= mouseX <= uiComp->position.x + uiComp->size.x &&
+                uiComp->position.y <= mouseY <= uiComp->position.y + uiComp->size.y
             );
         };
 

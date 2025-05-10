@@ -27,6 +27,8 @@ class MeshFactory {
         static constexpr float CAR_HEIGHT = 2;
         static constexpr float CAR_OFFSET = 0.5;
 
+        static constexpr glm::vec4 highlight = glm::vec4(1.f, 1.f, 1.f, 0.f);
+
     public:
         MeshFactory(Atlas* atlas);
 
