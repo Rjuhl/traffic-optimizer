@@ -7,6 +7,7 @@ screenspaceLocation(glGetUniformLocation(shader, "screenspace")) {
 };
 
 void Camera::update(float deltaTime) {
+    glfwGetFramebufferSize(window, &width, &height);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
         cameraPos.y += 1.f * scale * deltaTime;
     }
@@ -68,7 +69,6 @@ void Camera::reset() {
     up = {0.0f, 1.0f, 0.0f};
     rotation = {0.0f, 0.0f, 0.0f};
 };
-
-GLFWwindow* Camera::getWindow() { return window; };
+GLFWwindow* Camera::getWindow() { return window; }
 glm::mat4 Camera::getScreenSpace() { return screenspace; };
 glm::vec2 Camera::getScreenSize() { return glm::vec2(width, height); };
