@@ -8,6 +8,7 @@ screenspaceLocation(glGetUniformLocation(shader, "screenspace")) {
 
 void Camera::update(float deltaTime) {
     glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0,0,width,height);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
         cameraPos.y += 1.f * scale * deltaTime;
     }

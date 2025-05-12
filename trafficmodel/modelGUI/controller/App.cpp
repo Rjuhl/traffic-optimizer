@@ -67,7 +67,7 @@ int App::run(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glUseProgram(shader);
 
-        renderer->renderFrame(deltaTime);
+        renderer->renderFrame(deltaTime);        
 
         windowTitle->update();
         glfwSwapBuffers(window);
@@ -103,6 +103,7 @@ int App::glfwWindowInit(GLFWwindow** window) {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+    glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GL_FALSE);
 
     *window = glfwCreateWindow(640, 480, "Traffic Optimizer FPS: ...", NULL, NULL);
     glfwMakeContextCurrent(*window);
