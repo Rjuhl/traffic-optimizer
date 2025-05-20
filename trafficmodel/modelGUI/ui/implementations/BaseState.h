@@ -11,8 +11,8 @@ class BaseState : public ComponentState {
 
         bool isOverlap() {
             return(
-                uiComp->position.x <= mouseX <= uiComp->position.x + uiComp->size.x &&
-                uiComp->position.y <= mouseY <= uiComp->position.y + uiComp->size.y
+                uiComp->getPosition().x <= mouseX <= uiComp->getPosition().x + uiComp->getSize().x &&
+                uiComp->getPosition().y <= mouseY <= uiComp->getPosition().y + uiComp->getSize().y
             );
         };
 
@@ -29,19 +29,25 @@ class BaseState : public ComponentState {
 
         void updateState() override {
             if (isOverlap) {
-                float xDiff = (uiComp->size.x * hoverGrowth) - uiComp->size.x;
-                float yDiff = (uiComp->size.y * hoverGrowth) - uiComp->size.y;
-                uiComp->position.x -= xDiff / 2;
-                uiComp->position.y -= xDiff / 2;
-                uiComp->size.x *= hoverGrowth;
-                uiComp->size.y *= hoverGrowth;
+                float xDiff = (uiComp->getSize().x * hoverGrowth) - uiComp->getSize().x;
+                float yDiff = (uiComp->getSize().y * hoverGrowth) - uiComp->getSize().y;
+                uiComp->setPosition(glm::vec2(
+                    uiComp->getPosition().x - (xDiff / 2), 
+                    uiComp->getPosition().y - (xDiff / 2)
+                ));
+                uiComp->setSize(glm::vec2(
+                    uiComp->getSize().x  * hoverGrowth,
+                    uiComp->getSize().y * hoverGrowth
+                ));
             }
         };
+
         void setColors() override {
-            uiComp->color = color;
+            uiComp->setColor(baseColor);
         };
+
         void setTexture() override {
-            isOverlap() ? uiComp->texture = baseTexture + 1 : uiComp->texture = baseTexture;
+            isOverlap() ? uiComp->setTexture(baseTexture + 1) : uiComp->setTexture(baseTexture);
         };
 
 };

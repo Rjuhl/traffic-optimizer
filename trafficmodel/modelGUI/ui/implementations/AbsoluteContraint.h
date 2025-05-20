@@ -10,14 +10,14 @@ class AbsoluteContraint : public ComponentConstraint {
             isValid();
 
             glm::vec2 parentPos;
-            if (uiComp->parent == nullptr) {
+            if (uiComp->getParent() == nullptr) {
                 int pw, ph;
-                glfwGetWindowSize(uiComp->window, &pw, &ph);
+                glfwGetWindowSize(uiComp->getWindow(), &pw, &ph);
                 parentPos = {0.f, 0.f};
             } else {
-                parentPos = uiComp->parent->position;
+                parentPos = uiComp->getParent()->getPosition();
             }
-        }
 
-        return parentPos + glm::vec2(x, y);
+            return parentPos + glm::vec2(x, y);
+        }
 };

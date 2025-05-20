@@ -41,4 +41,19 @@ class UIComponent{
         void update();
         void draw();
         void updateAndDraw();
+
+        void setTexture(int texture_);
+        void setParent(UIComponent* parent_);
+        void setWindow(GLFWwindow* window_);
+        void setPosition(glm::vec2 position_);
+        void setSize(glm::vec2 size_);
+        void setColor(glm::vec4 color_);
+
+        int getTexture();
+        UIComponent* getParent();
+        GLFWwindow* getWindow();
+        glm::vec2 getPosition();
+        glm::vec2 getSize();
+        glm::vec4 getColor();
+
 };

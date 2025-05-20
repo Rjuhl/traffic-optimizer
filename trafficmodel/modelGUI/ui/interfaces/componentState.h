@@ -12,8 +12,8 @@ class ComponentState {
 
         virtual ~ComponentState() = default;
         virtual void updateState() = 0;
-        virtual void setColors() const = 0;
-        virtual void setTexture() const = 0;
+        virtual void setColors() = 0;
+        virtual void setTexture() = 0;
 
         void setParent(UIComponent* uiComp_) { uiComp = uiComp_; };
         void update() {

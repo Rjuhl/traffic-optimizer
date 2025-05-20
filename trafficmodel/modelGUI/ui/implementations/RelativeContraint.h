@@ -10,14 +10,14 @@ class RelativeContraint : public ComponentConstraint {
             isValid();
 
             glm::vec2 parentPos, parentSize;
-            if (uiComp->parent == nullptr) {
+            if (uiComp->getParent() == nullptr) {
                 int pw, ph;
-                glfwGetWindowSize(uiComp->window, &pw, &ph);
+                glfwGetWindowSize(uiComp->getWindow(), &pw, &ph);
                 parentPos = {0.f, 0.f};
                 parentSize = {pw, ph};
             } else {
-                parentPos = uiComp->parent->position;
-                parentSize = uiComp->parent->size;
+                parentPos = uiComp->getParent()->getPosition();
+                parentSize = uiComp->getParent()->getPosition();
             }
 
             return parentPos + (parentSize * glm::vec2(x, y));

@@ -101,3 +101,17 @@ void UIComponent::draw() {
     glUniform4fv(atlas->colorLocation, 1, glm::value_ptr(color));
     glDrawElements(GL_TRIANGLES, ELEM_COUNT, GL_UNSIGNED_INT, 0);
 };
+
+void UIComponent::setTexture(int texture_) { texture = texture_; };
+void UIComponent::setParent(UIComponent* parent_) { parent = parent_; };
+void UIComponent::setWindow(GLFWwindow* window_) { window = window_; };
+void UIComponent::setPosition(glm::vec2 position_) { position = position_; };
+void UIComponent::setSize(glm::vec2 size_) { size = size_; };
+void UIComponent::setColor(glm::vec4 color_) { color = color_; };
+
+int UIComponent::getTexture() { return texture; };
+UIComponent* UIComponent::getParent() { return parent; };
+GLFWwindow* UIComponent::getWindow() { return window; };
+glm::vec2 UIComponent::getPosition() { return position; };
+glm::vec2 UIComponent::getSize() { return size; };
+glm::vec4 UIComponent::getColor() { return color; };
