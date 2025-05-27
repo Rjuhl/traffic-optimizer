@@ -7,13 +7,17 @@ class BaseState : public ComponentState {
         int baseTexture;
         float hoverGrowth;
         glm::vec4 baseColor;
-        int& mouseX, mouseY;
 
-        bool isOverlap() {
-            return(
-                uiComp->getPosition().x <= mouseX <= uiComp->getPosition().x + uiComp->getSize().x &&
-                uiComp->getPosition().y <= mouseY <= uiComp->getPosition().y + uiComp->getSize().y
-            );
+        bool isOverlap(glm::vec2 mouse) {
+
+            // There is a bug here: the coordinate systems differ between mouse and uiComp here
+
+            // return(
+            //     uiComp->getPosition().x <= mouse.x <= uiComp->getPosition().x + uiComp->getSize().x &&
+            //     uiComp->getPosition().y <= mouse.y <= uiComp->getPosition().y + uiComp->getSize().y
+            // );
+
+            return false;
         };
 
     public:
@@ -21,14 +25,13 @@ class BaseState : public ComponentState {
         BaseState(
             int baseTexture, 
             float hoverGrowth, 
-            glm::vec4 baseColor, 
-            int& mouseX, int& mouseY
+            glm::vec4 baseColor 
         ) : 
         baseTexture(baseTexture), hoverGrowth(hoverGrowth), 
-        baseColor(baseColor), mouseX(mouseX), mouseY(mouseY) {};
+        baseColor(baseColor) {};
 
-        void updateState() override {
-            if (isOverlap) {
+        void updateState(glm::vec2 mouse) override {
+            if (isOverlap(mouse)) {
                 float xDiff = (uiComp->getSize().x * hoverGrowth) - uiComp->getSize().x;
                 float yDiff = (uiComp->getSize().y * hoverGrowth) - uiComp->getSize().y;
                 uiComp->setPosition(glm::vec2(
@@ -42,12 +45,12 @@ class BaseState : public ComponentState {
             }
         };
 
-        void setColors() override {
+        void setColors(glm::vec2 mouse) override {
             uiComp->setColor(baseColor);
         };
 
-        void setTexture() override {
-            isOverlap() ? uiComp->setTexture(baseTexture + 1) : uiComp->setTexture(baseTexture);
+        void setTexture(glm::vec2 mouse) override {
+            isOverlap(mouse) ? uiComp->setTexture(baseTexture + 1) : uiComp->setTexture(baseTexture);
         };
 
 };

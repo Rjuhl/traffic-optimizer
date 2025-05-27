@@ -1,59 +1,50 @@
 #pragma once
 #include "config.h"
-#include "atlas.h"
-#include "componentState.h"
 #include "componentConstraint.h"
+#include "componentState.h"
+
 
 class UIComponent{
     private:
-        int texture;
-        glm::vec4 color;
-        glm::vec2 size;
-        glm::vec2 position;
-        unsigned int ELEM_COUNT = 6;
-        unsigned int EBO, VBO, VAO;
-
-        Atlas* atlas;
-        GLFWwindow* window;
-        UIComponent* parent;
+        uint32_t parent;
         ComponentState* state;
         ComponentConstraint* sizeConstraint;
-        ComponentConstraint* positionContraint;
+        ComponentConstraint* positionConstraint;
 
-        void bindVAO();
-        std::vector<float> getVertices();
-        std::vector<float> getUVMinMax();
+        int texture;
+        float level;
+        glm::vec2 size;
+        glm::vec2 position;
+        glm::vec4 color;
 
-        friend class ComponentState;
-        
     public:
         UIComponent(
-            Atlas* atlas,
-            GLFWwindow* window,
-            UIComponent* parent,
+            int texture, 
+            float level,
+            uint32_t parent,
+            glm::vec4 color,
             ComponentState* state,
             ComponentConstraint* sizeConstraint,
-            ComponentConstraint* positionContraint
+            ComponentConstraint* positionConstraint
         );
         ~UIComponent();
 
-        void Init();
-        void update();
-        void draw();
-        void updateAndDraw();
+        void update(
+            const glm::vec2& mouse,
+            const glm::vec2& parentSize,
+            const glm::vec2& parentPostition
+        );
 
-        void setTexture(int texture_);
-        void setParent(UIComponent* parent_);
-        void setWindow(GLFWwindow* window_);
-        void setPosition(glm::vec2 position_);
-        void setSize(glm::vec2 size_);
-        void setColor(glm::vec4 color_);
-
+        std::vector<float> getVertices();
+        
         int getTexture();
-        UIComponent* getParent();
-        GLFWwindow* getWindow();
-        glm::vec2 getPosition();
+        uint32_t getParent();
         glm::vec2 getSize();
+        glm::vec2 getPosition();
         glm::vec4 getColor();
 
+        void setTexture(int texture_);
+        void setSize(glm::vec2 size_);
+        void setPosition(glm::vec2 position_);
+        void setColor(glm::vec4 color_);
 };

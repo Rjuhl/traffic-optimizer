@@ -3,23 +3,13 @@
 
 class RelativeContraint : public ComponentConstraint {
     private:
-        float x, y;
+        glm::vec2 contraint;
     public:
-        RelativeContraint(float x_, float y_) : x(x_), y(y_) {};
-        glm::vec2 getElement() override {
-            isValid();
+        RelativeContraint(glm::vec2 contraint_) : contraint(contraint_) {};
+        glm::vec2 getElement(glm::vec2 relativeVec) override {
 
-            glm::vec2 parentPos, parentSize;
-            if (uiComp->getParent() == nullptr) {
-                int pw, ph;
-                glfwGetWindowSize(uiComp->getWindow(), &pw, &ph);
-                parentPos = {0.f, 0.f};
-                parentSize = {pw, ph};
-            } else {
-                parentPos = uiComp->getParent()->getPosition();
-                parentSize = uiComp->getParent()->getPosition();
-            }
+            std::cout << "!! " << relativeVec.x << ", " << relativeVec.y << " " << contraint.x << ", " << contraint.y << std::endl;
 
-            return parentPos + (parentSize * glm::vec2(x, y));
+            return relativeVec * contraint;
         };
 };

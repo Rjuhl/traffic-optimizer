@@ -29,5 +29,5 @@ class Renderer {
 
         // Temp functions?
         int32_t addGameObj(RectangleMesh* mesh);
-
+        int32_t addUIObj(UIComponent* uiComp);
 };

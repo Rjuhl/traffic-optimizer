@@ -39,6 +39,7 @@ void Renderer::renderFrame(float dt) {
     camera->setUIView();
     for (int i = 0; i < uiObjs.components.size(); i++) {
         // UI loop
+        uiObjs.components[i].value->updateAndDraw(mousePos());
     };
 };
 
@@ -119,7 +120,11 @@ bool Renderer::pointInTriangle(const glm::vec2& P, const glm::vec2& A, const glm
     return (u >= 0) && (v >= 0) && (u + v <= 1);
 }
 
-
+// These add funcs should prolly foward along the argument and add the Objects and not hte pointers to make it easier for them to draw
 int32_t Renderer::addGameObj(RectangleMesh* mesh){
     return gameObjs.add(mesh);
 }
+
+int32_t Renderer::addUIObj(UIComponent* uiComp) {
+    return uiObjs.add(uiComp);
+};

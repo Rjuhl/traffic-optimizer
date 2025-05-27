@@ -9,6 +9,9 @@
 #include "textureConstants.h"
 #include "atlas.h"
 #include "renderer.h"
+#include "uiComponent.h"
+#include "ui/implementations/RelativeContraint.h"
+#include "ui/implementations/BaseState.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
@@ -48,12 +51,23 @@ int App::run(){
 
     std::vector<RectangleMesh*> renderables = {rect1, rect3, rect2, rect4, rect5, rect6};
 
+    UIComponent* ui = new UIComponent(
+        atlas, 
+        window,
+        nullptr,
+        new BaseState(TextId::UI, 1.2, glm::vec4(0.f)),
+        new RelativeContraint(glm::vec2(1, 1)),
+        new RelativeContraint(glm::vec2(1, 1))
+    );
+    ui->Init();
+
     // Create Renderer 
     Renderer* renderer = new Renderer(camera, shader);
     for (auto rect : renderables) {
         renderer->addGameObj(rect);
     }
 
+    renderer->addUIObj(ui);
     //Init delta time 
     float lastFrame = 0.0f;
     float deltaTime = 0.0f;
@@ -81,6 +95,7 @@ int App::run(){
     delete rect5;
     delete rect6;
 
+    delete ui;
     delete camera;
     delete windowTitle;
     delete atlas;
