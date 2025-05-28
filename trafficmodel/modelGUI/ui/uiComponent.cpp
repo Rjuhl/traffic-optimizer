@@ -51,6 +51,7 @@ void UIComponent::setSize(glm::vec2 size_) { size = size_; };
 void UIComponent::setPosition(glm::vec2 position_) { position = position_; };
 void UIComponent::setColor(glm::vec4 color_) { color = color_; };
 
+int UIComponent::getLevel() { return level; };
 int UIComponent::getTexture() { return texture; };
 uint32_t UIComponent::getParent() { return parent; };
 glm::vec2 UIComponent::getSize() { return size; };

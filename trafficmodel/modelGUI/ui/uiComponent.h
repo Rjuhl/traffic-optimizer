@@ -38,6 +38,7 @@ class UIComponent{
         std::vector<float> getVertices();
         
         int getTexture();
+        int getLevel();
         uint32_t getParent();
         glm::vec2 getSize();
         glm::vec2 getPosition();
