@@ -1,11 +1,14 @@
 #include "renderer.h"
 #include "guiHelpers.h"
 
-Renderer::Renderer(Camera* camera, unsigned int shader) : 
-camera(camera), COLOR(glGetUniformLocation(shader, "color")) {};
+Renderer::Renderer(Camera* camera, Atlas* atlas) : 
+camera(camera), atlas(atlas), COLOR(atlas->colorLocation) { 
+    uiRegistry = new UIRegistry(atlas, camera);
+};
 
 Renderer::~Renderer() {
     // Delete gamObj and uiObjs
+    delete uiRegistry;
 };
 
 void Renderer::renderFrame(float dt) {
@@ -35,12 +38,7 @@ void Renderer::renderFrame(float dt) {
         }
     };
 
-    // Render UI componets
-    camera->setUIView();
-    for (int i = 0; i < uiObjs.components.size(); i++) {
-        // UI loop
-        uiObjs.components[i].value->updateAndDraw(mousePos());
-    };
+    uiRegistry->drawUI();
 };
 
 
@@ -125,6 +123,16 @@ int32_t Renderer::addGameObj(RectangleMesh* mesh){
     return gameObjs.add(mesh);
 }
 
-int32_t Renderer::addUIObj(UIComponent* uiComp) {
-    return uiObjs.add(uiComp);
+int32_t Renderer::addUIObj(
+    int texture, 
+    uint32_t parent,
+    glm::vec4 color,
+    ComponentState* state,
+    ComponentConstraint* sizeConstraint,
+    ComponentConstraint* positionConstraint
+) {
+    return uiRegistry->addUIComponent(
+        texture, parent, color,
+        state, sizeConstraint, positionConstraint
+    );
 };

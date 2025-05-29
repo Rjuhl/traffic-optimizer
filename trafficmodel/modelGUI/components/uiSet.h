@@ -1,17 +1,11 @@
 #pragma once
+#include "components.h"
 #include <vector>
 #include <algorithm>
 #include <cstdint>
 #include <stdexcept>
 #include <utility>
 #define UI_SET_MAX_OBJ 256
-
-template<typename T>
-struct WithId {
-    uint32_t id;
-    T value;
-    WithId(uint32_t id, const T& value) : id(id), value(value) {};
-};
 
 
 template<typename T>

@@ -1,10 +1,10 @@
 #pragma once
-#include "config"
+#include "config.h"
 #include "uiComponent.h"
 #include "atlas.h"
-#include "cameria.h"
+#include "camera.h"
 #include "uiSet.h"
-#include "textureContants.h"
+#include "textureConstants.h"
 #include "datatypes.h"
 
 class UIRegistry {
@@ -12,10 +12,11 @@ class UIRegistry {
         Atlas* atlas;
         Camera* camera;
         
-        ui_set<UIComponets> components;
+        ui_set<UIComponent> components;
 
         unsigned int EBO, VBO, VAO;
         unsigned int UV_MIN, UV_MAX, COLOR;
+        std::vector<int> indices = {0, 1, 2, 1, 3, 2};
 
         glm::vec2 getMouse();
         glm::vec2 getWindowSize();
@@ -23,13 +24,13 @@ class UIRegistry {
         std::vector<float> getUVMinMax(int texture);
         glm::vec3 transformPoint(const glm::mat4& transform, const glm::vec3 point);
 
-        void sendVerticiesToGPU(const std::vector<float>& verticies)
+        void sendVerticiesToGPU(const std::vector<float>& vertices);
 
     public:
         UIRegistry(Atlas* atlas, Camera* camera);
         ~UIRegistry();
 
-        void removeUIComponent(uint32 id);
+        void removeUIComponent(uint32_t id);
         uint32_t addUIComponent(
             int texture, 
             uint32_t parent,
@@ -40,4 +41,4 @@ class UIRegistry {
         );
 
         void drawUI();   
-}
+};

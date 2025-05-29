@@ -6,8 +6,6 @@ UV_MIN(atlas->uvMinLocation),
 UV_MAX(atlas->uvMaxLocation),
 COLOR(atlas->colorLocation)
 {
-    std::vector<int> indicies = {0, 1, 2, 1, 3, 2};
-
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
@@ -33,20 +31,21 @@ UIRegistry::~UIRegistry() {};
 
 
 glm::vec2 UIRegistry::getWindowSize() {
-    camera->getScreenSize();
+    return camera->getScreenSize();
 };
 
 glm::vec2 UIRegistry::getMouse() {
+    double mx, my;
     glfwGetCursorPos(camera->getWindow(), &mx, &my);
     return glm::vec2((2.f * mx) / getWindowSize().x - 1.f, 1.f - (2.f * my) / getWindowSize().y);
 };
 
 glm::mat4 UIRegistry::getTransform() {
-    return glm::inverse(camera->getSceenSpace());
+    return glm::inverse(camera->getScreenSpace());
 };
 
 glm::vec3 UIRegistry::transformPoint(const glm::mat4& transform, const glm::vec3 point) {
-    return (transform * glm::vec4(point, 1.f)).w;
+    return glm::vec3(transform * glm::vec4(point, 1.f));
 };
 
 std::vector<float> UIRegistry::getUVMinMax(int texture) {
@@ -63,7 +62,7 @@ std::vector<float> UIRegistry::getUVMinMax(int texture) {
     };
 };
 
-void UIRegistry::removeUIComponent(uint32 id) { components.remove(id); };
+void UIRegistry::removeUIComponent(uint32_t id) { components.remove(id); };
 uint32_t UIRegistry::addUIComponent(
     int texture, 
     uint32_t parent,
@@ -78,11 +77,11 @@ uint32_t UIRegistry::addUIComponent(
         UIComponent(
             texture, level, parent, color,
             state, sizeConstraint, positionConstraint
-        )
+        ), parent
     );
 };
 
-void UIRegistry::sendVerticiesToGPU(const std::vector<float>& verticies) {
+void UIRegistry::sendVerticiesToGPU(const std::vector<float>& vertices) {
     // Send data
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
@@ -102,7 +101,7 @@ void UIRegistry::drawUI() {
     parents.reserve(components.getItems().size());
     parents.emplace_back(0, glm::vec2(-1.f, -1.f), glm::vec2(2 / windowSize.x, 2 / windowSize.y));
 
-    for (auto& elem : components) {
+    for (auto& elem : components.getItems()) {
         uint32_t id = elem.id;
         UIComponent comp = elem.value;
 
@@ -113,7 +112,7 @@ void UIRegistry::drawUI() {
         const std::vector<float>& vertices = comp.getVertices();
         const std::vector<float>& uv = getUVMinMax(comp.getTexture());
 
-        parent.emplace_back(id, comp.getSize(), comp.getPosition());
+        parents.emplace_back(id, comp.getSize(), comp.getPosition());
 
         glUniform2f(UV_MIN, uv[0], uv[1]);
         glUniform2f(UV_MAX, uv[2], uv[3]);

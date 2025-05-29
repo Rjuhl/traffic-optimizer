@@ -1,13 +1,7 @@
 #pragma once
-#define COMP_SET_MAX_OBJ 4096
+#include "components.h"
 #include <unordered_map>
-
-template<typename T>
-struct WithId {
-    uint32_t id;
-    T value;
-    WithId(uint32_t id, const T& value) : id(id), value(value) {};
-};
+#define COMP_SET_MAX_OBJ 4096
 
 template<typename T>
 class render_set {
