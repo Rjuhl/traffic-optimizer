@@ -39,6 +39,7 @@ void Renderer::renderFrame(float dt) {
     };
 
     uiRegistry->drawUI();
+    std::cout << "UI drawn" << std::endl;
 };
 
 
@@ -127,9 +128,9 @@ int32_t Renderer::addUIObj(
     int texture, 
     uint32_t parent,
     glm::vec4 color,
-    ComponentState* state,
-    ComponentConstraint* sizeConstraint,
-    ComponentConstraint* positionConstraint
+    std::shared_ptr<ComponentState> state,
+    std::shared_ptr<ComponentConstraint> sizeConstraint,
+    std::shared_ptr<ComponentConstraint> positionConstraint
 ) {
     return uiRegistry->addUIComponent(
         texture, parent, color,

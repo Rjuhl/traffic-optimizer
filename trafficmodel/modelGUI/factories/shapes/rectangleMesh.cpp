@@ -114,6 +114,7 @@ void RectangleMesh::draw() {
     glUniform2f(UV_MIN, uvMinMax[0], uvMinMax[1]);
     glUniform2f(UV_MAX, uvMinMax[2], uvMinMax[3]);
     glDrawElements(GL_TRIANGLES, ELEM_COUNT, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
 };
 
 std::vector<float> RectangleMesh::getVertices() { return vertices; };

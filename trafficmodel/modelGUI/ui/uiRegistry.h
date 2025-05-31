@@ -16,6 +16,7 @@ class UIRegistry {
 
         unsigned int EBO, VBO, VAO;
         unsigned int UV_MIN, UV_MAX, COLOR;
+        unsigned int MAX_VERTEX_COUNT = 20;
         std::vector<int> indices = {0, 1, 2, 1, 3, 2};
 
         glm::vec2 getMouse();
@@ -25,6 +26,7 @@ class UIRegistry {
         glm::vec3 transformPoint(const glm::mat4& transform, const glm::vec3 point);
 
         void sendVerticiesToGPU(const std::vector<float>& vertices);
+        void transformVertices(std::vector<float>& vertices, const glm::mat4& transform);
 
     public:
         UIRegistry(Atlas* atlas, Camera* camera);
@@ -35,9 +37,9 @@ class UIRegistry {
             int texture, 
             uint32_t parent,
             glm::vec4 color,
-            ComponentState* state,
-            ComponentConstraint* sizeConstraint,
-            ComponentConstraint* positionConstraint
+            std::shared_ptr<ComponentState> state,
+            std::shared_ptr<ComponentConstraint> sizeConstraint,
+            std::shared_ptr<ComponentConstraint> positionConstraint
         );
 
         void drawUI();   

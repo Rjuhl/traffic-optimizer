@@ -6,7 +6,7 @@ class RelativeContraint : public ComponentConstraint {
         glm::vec2 contraint;
     public:
         RelativeContraint(glm::vec2 contraint_) : contraint(contraint_) {};
-        glm::vec2 getElement(glm::vec2 relativeVec) override {
+        glm::vec2 getElement(const glm::vec2& relativeVec) override {
 
             std::cout << "!! " << relativeVec.x << ", " << relativeVec.y << " " << contraint.x << ", " << contraint.y << std::endl;
 

@@ -19,6 +19,15 @@ add_subdirectory(__tests__)
 add_executable(traffic_model src/main.cpp)
 target_link_libraries(traffic_model PRIVATE model modelGUI)
 
+# Enable AddressSanitizer
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    message(STATUS "Enabling AddressSanitizer")
+    set(SANITIZER_FLAGS "-fsanitize=address -fno-omit-frame-pointer")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SANITIZER_FLAGS}")
+    set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} ${SANITIZER_FLAGS}")
+endif()
+
+
 target_include_directories(
     traffic_model
     PUBLIC

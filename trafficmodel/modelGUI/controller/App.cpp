@@ -67,12 +67,20 @@ int App::run(){
         renderer->addGameObj(rect);
     }
 
-    renderer->addUIObj(
+    int32_t ui1 = renderer->addUIObj(
         TextId::UI, 0,
         glm::vec4(0.f),
-        new BaseState(TextId::UI, 1.2, glm::vec4(0.f)),
-        new RelativeContraint(glm::vec2(1, 1)),
-        new RelativeContraint(glm::vec2(1, 1))
+        std::make_shared<BaseState>(TextId::UI, 1.2, glm::vec4(0.f)),
+        std::make_shared<RelativeContraint>(glm::vec2(0.5, 0.5)),
+        std::make_shared<RelativeContraint>(glm::vec2(0.9, 0.9))
+    );
+
+    int32_t ui2 = renderer->addUIObj(
+        TextId::UI, ui1,
+        glm::vec4(0.f),
+        std::make_shared<BaseState>(TextId::UI, 1.2, glm::vec4(0.f)),
+        std::make_shared<RelativeContraint>(glm::vec2(0.5, 0.5)),
+        std::make_shared<RelativeContraint>(glm::vec2(0.9, 0.9))
     );
 
     //Init delta time 

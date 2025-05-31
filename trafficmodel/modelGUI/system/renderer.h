@@ -36,8 +36,8 @@ class Renderer {
             int texture, 
             uint32_t parent,
             glm::vec4 color,
-            ComponentState* state,
-            ComponentConstraint* sizeConstraint,
-            ComponentConstraint* positionConstraint
+            std::shared_ptr<ComponentState> state,
+            std::shared_ptr<ComponentConstraint> sizeConstraint,
+            std::shared_ptr<ComponentConstraint> positionConstraint
         );
 };

@@ -7,9 +7,9 @@
 class UIComponent{
     private:
         uint32_t parent;
-        ComponentState* state;
-        ComponentConstraint* sizeConstraint;
-        ComponentConstraint* positionConstraint;
+        std::shared_ptr<ComponentState> state;
+        std::shared_ptr<ComponentConstraint> sizeConstraint;
+        std::shared_ptr<ComponentConstraint> positionConstraint;
 
         int texture;
         float level;
@@ -23,9 +23,9 @@ class UIComponent{
             float level,
             uint32_t parent,
             glm::vec4 color,
-            ComponentState* state,
-            ComponentConstraint* sizeConstraint,
-            ComponentConstraint* positionConstraint
+            std::shared_ptr<ComponentState> state,
+            std::shared_ptr<ComponentConstraint> sizeConstraint,
+            std::shared_ptr<ComponentConstraint> positionConstraint
         );
         ~UIComponent();
 

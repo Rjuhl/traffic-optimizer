@@ -1,4 +1,5 @@
 #include "uiRegistry.h"
+#include "guiHelpers.h"
 
 UIRegistry::UIRegistry(Atlas* atlas, Camera* camera)
 : atlas(atlas), camera(camera),
@@ -11,6 +12,8 @@ COLOR(atlas->colorLocation)
 
     // Vertex buffer
     glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, MAX_VERTEX_COUNT * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
 
     // Attribute layout
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -27,7 +30,11 @@ COLOR(atlas->colorLocation)
     glBindVertexArray(0);
 }; 
 
-UIRegistry::~UIRegistry() {};
+UIRegistry::~UIRegistry() {
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+};
 
 
 glm::vec2 UIRegistry::getWindowSize() {
@@ -41,6 +48,9 @@ glm::vec2 UIRegistry::getMouse() {
 };
 
 glm::mat4 UIRegistry::getTransform() {
+    guiHelpers.printMat4(camera->getScreenSpace());
+    guiHelpers.printMat4(glm::inverse(camera->getScreenSpace()));
+    guiHelpers.printMat4(camera->getScreenSpace() * glm::inverse(camera->getScreenSpace()));
     return glm::inverse(camera->getScreenSpace());
 };
 
@@ -67,9 +77,9 @@ uint32_t UIRegistry::addUIComponent(
     int texture, 
     uint32_t parent,
     glm::vec4 color,
-    ComponentState* state,
-    ComponentConstraint* sizeConstraint,
-    ComponentConstraint* positionConstraint
+    std::shared_ptr<ComponentState> state,
+    std::shared_ptr<ComponentConstraint> sizeConstraint,
+    std::shared_ptr<ComponentConstraint> positionConstraint
 ) {
     float level = TextId::UI;
     if (parent != 0) level = components.get(parent)->getLevel() + 1;
@@ -82,41 +92,58 @@ uint32_t UIRegistry::addUIComponent(
 };
 
 void UIRegistry::sendVerticiesToGPU(const std::vector<float>& vertices) {
+    guiHelpers.printfVector(vertices);
+    
     // Send data
+    glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(float), vertices.data());
 
     // Draw it
-    glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 };
 
+void UIRegistry::transformVertices(std::vector<float>& vertices, const glm::mat4& transform) {
+    for (int i = 0; i < vertices.size(); i += 5) {
+        glm::vec3 transformed = glm::vec3(
+            transform * glm::vec4(vertices[i], vertices[i + 1], vertices[i + 2], 1.f)
+        );
+        vertices[i] = transformed.x;
+        vertices[i + 1] = transformed.y;
+    }
+}
+
 void UIRegistry::drawUI() {
-    glm::mat4 transform = getTransform();
-    glm::vec2 windowSize = getWindowSize();
-    glm::vec2 mouse = getMouse();
-    
+    const glm::mat4& transform = getTransform();
+    const glm::vec2& windowSize = getWindowSize();
+    const glm::vec2& mouse = getMouse();
+
     std::vector<ParentInfo> parents;
-    parents.reserve(components.getItems().size());
-    parents.emplace_back(0, glm::vec2(-1.f, -1.f), glm::vec2(2 / windowSize.x, 2 / windowSize.y));
+    parents.reserve(components.getItems().size() + 1);
+    parents.emplace_back(0, glm::vec2(2.f, 2.f), glm::vec2(-1.f, 1.f));
 
     for (auto& elem : components.getItems()) {
         uint32_t id = elem.id;
         UIComponent comp = elem.value;
 
-        while (parents[parents.size() - 1] != id) parents.pop_back();
-        ParentInfo parent = parents[parents.size() - 1];
+        while (parents.size() > 1 && parents.back() != id) parents.pop_back();
+        ParentInfo parent = parents.back();
 
         comp.update(mouse, parent.size, parent.position);
-        const std::vector<float>& vertices = comp.getVertices();
+
+        std::vector<float> vertices = comp.getVertices();
         const std::vector<float>& uv = getUVMinMax(comp.getTexture());
+        transformVertices(vertices, transform);
 
         parents.emplace_back(id, comp.getSize(), comp.getPosition());
 
         glUniform2f(UV_MIN, uv[0], uv[1]);
         glUniform2f(UV_MAX, uv[2], uv[3]);
         glUniform4fv(COLOR, 1, glm::value_ptr(comp.getColor()));
+
+
         sendVerticiesToGPU(vertices);
+
     }
 }

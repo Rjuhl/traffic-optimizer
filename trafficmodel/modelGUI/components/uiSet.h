@@ -64,7 +64,7 @@ class ui_set {
             return nullptr;
         };
 
-        std::vector<WithId<T>> getItems() {
+        const std::vector<WithId<T>>& getItems() {
             return components;
         };
     };

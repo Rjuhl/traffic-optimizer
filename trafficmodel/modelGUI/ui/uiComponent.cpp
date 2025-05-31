@@ -7,9 +7,9 @@ UIComponent::UIComponent(
     float level,
     uint32_t parent,
     glm::vec4 color,
-    ComponentState* state,
-    ComponentConstraint* sizeConstraint,
-    ComponentConstraint* positionConstraint
+    std::shared_ptr<ComponentState> state,
+    std::shared_ptr<ComponentConstraint> sizeConstraint,
+    std::shared_ptr<ComponentConstraint> positionConstraint
 ) :
     texture(texture),
     level(level),
@@ -21,9 +21,6 @@ UIComponent::UIComponent(
 { state->setParent(this); };
 
 UIComponent::~UIComponent() {
-    delete state;
-    delete sizeConstraint;
-    delete positionConstraint;
 };
 
 
@@ -34,7 +31,8 @@ void UIComponent::update(
 ) {
     size = sizeConstraint->getElement(parentSize);
     position = positionConstraint->getElement(parentPostition);
-    state->update(mouse);
+    // state->update(mouse);
+    // std::cout << "State updated" << std::endl;
 };
 
 std::vector<float> UIComponent::getVertices() {
@@ -58,59 +56,3 @@ glm::vec2 UIComponent::getSize() { return size; };
 glm::vec2 UIComponent::getPosition() {return position; };
 glm::vec4 UIComponent::getColor() { return color; };
 
-
-// void UIComponent::bindVAO() {
-//     std::vector<float> vertices = getVertices();
-//     std::vector<int> indicies = {0, 1, 2, 1, 3, 2};
-
-//     guiHelpers.printfVector(vertices);
-
-//     //position
-//     glGenBuffers(1, &VBO);
-//     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-//     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-
-//     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-//     glEnableVertexAttribArray(0);
-
-//     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-//     glEnableVertexAttribArray(1);
-
-//     //element buffer
-//     glGenBuffers(1, &EBO);
-//     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-//     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies.size() * sizeof(int), indicies.data(), GL_STATIC_DRAW);
-// };
-
-// std::vector<float> UIComponent::getVertices() {
-
-//     // return {
-//     //     50, 50, (float)TextId::UI, 1.f, 0.f,
-//     //     50, 0, (float)TextId::UI, 1.f, 1.f,
-//     //     0, 50, (float)TextId::UI, 0.f, 0.f,
-//     //     0, 0, (float)TextId::UI, 0.f, 1.f
-//     // };
-
-//     std::cout << size.x << ", " << size.y << std::endl << position.x << ", " << position.y << std::endl << std::endl; 
-
-//     return {
-//         position.x, position.y, (float)TextId::UI, 1.f, 0.f,
-//         position.x, position.y + size.y, (float)TextId::UI, 1.f, 1.f,
-//         position.x + size.x, position.y, (float)TextId::UI, 0.f, 0.f,
-//         position.x + size.x, position.y + size.y, (float)TextId::UI, 0.f, 1.f
-//     };
-// };
-
-// std::vector<float> UIComponent::getUVMinMax() {
-//     int blocksPerRow = atlas->textWidth / atlas->tileSize;
-//     int row = texture / blocksPerRow;
-//     int col = texture % blocksPerRow;
-
-//     float uStep = atlas->tileSize / (float)atlas->textWidth;
-//     float vStep = atlas->tileSize / (float)atlas->textHeight;
-
-//     return std::vector<float>{
-//         col * uStep, (1 - (row * vStep)) - vStep,
-//         (col * uStep) + uStep, (1 - (row * vStep))
-//     };
-// };

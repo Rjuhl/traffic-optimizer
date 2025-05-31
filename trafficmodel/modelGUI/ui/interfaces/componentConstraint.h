@@ -6,5 +6,5 @@
 class ComponentConstraint {
     public:
         virtual ~ComponentConstraint() = default;
-        virtual glm::vec2 getElement(glm::vec2 relativeVec) = 0;
+        virtual glm::vec2 getElement(const glm::vec2& relativeVec) = 0;
 };
